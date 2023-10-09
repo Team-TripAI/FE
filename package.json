@@ -10,12 +10,20 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.14.12",
+    "@mui/material": "^5.14.12",
+    "@mui/styled-engine-sc": "^5.14.12",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.16.0",
     "recoil": "^0.7.7",
     "recoil-persist": "^5.1.0",
-    "styled-components": "^6.0.8"
+    "styled-components": "^6.0.8",
+    "vite-plugin-checker": "^0.6.2",
+    "vite-plugin-material-ui": "^1.0.1",
+    "vite-plugin-react": "^4.0.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
