@@ -12,7 +12,7 @@ import SendIcon from "@mui/icons-material/Send";
 import Button from "@mui/material/Button";
 import { useState } from "react";
 import { useSetRecoilState } from "recoil";
-import { submitFormat } from "../../constans/atoms";
+import { submitFormat } from "../../constants/atoms";
 
 const marks = [
   {
