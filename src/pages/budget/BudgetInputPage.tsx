@@ -11,11 +11,12 @@ import { styled } from "@mui/material";
 // 그에 맞는 사진 가져오고 띄우기
 
 const MainContainer = styled(Container)({
-  marginTop: 100,
+  marginTop: 65,
   width: "1440px",
   height: "750px",
   display: "flex",
   justifyContent: "center",
+  paddingTop: 20,
 });
 
 const ImageCard = styled(CardMedia)({
