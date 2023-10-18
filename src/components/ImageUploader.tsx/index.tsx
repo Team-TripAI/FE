@@ -5,6 +5,23 @@ import styled from 'styled-components';
 const Container = styled.div`
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+`;
+const Box = styled.div`
+    width: 100%;
+    display: flex;
+    align-items: center;
+`;
+const UploadBox = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+`;
+const Img = styled.img`
+    border-radius: 5px;
 `;
 
 const ImageUploader = () => {
@@ -70,7 +87,11 @@ const ImageUploader = () => {
 
     return (
         <Container>
-            <div>
+            <Box>
+                <a href={location}>{location}</a>
+                {imageSrc ? <Img src={imageSrc} alt="image preview" width={'100%'} /> : <Img src="" alt="none" />}
+            </Box>
+            <UploadBox>
                 <input
                     // hidden
                     accept="image/*"
@@ -92,13 +113,10 @@ const ImageUploader = () => {
                         uploadS3();
                     }}
                 >
-                    upload
+                    UPLOAD
                 </button>
-            </div>
-            <div>
-                <img src={imageSrc} alt="image preview" width={'50%'} />
-                <a href={location}>{location}</a>
-            </div>
+            </UploadBox>
+
             {/* <img src={location} alt="이미지" /> */}
         </Container>
     );
