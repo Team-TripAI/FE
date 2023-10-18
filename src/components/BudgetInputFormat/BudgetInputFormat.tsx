@@ -1,8 +1,4 @@
 import {
-  FormControl,
-  OutlinedInput,
-  InputAdornment,
-  InputLabel,
   Typography,
   Slider,
   Box,
@@ -11,6 +7,7 @@ import {
   Stack,
   Paper,
   Chip,
+  TextField,
 } from "@mui/material";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers";
@@ -22,6 +19,7 @@ import { useSetRecoilState } from "recoil";
 import { submitFormat } from "../../constants/atoms";
 import { styled } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
+import { Alert } from "@mui/material";
 
 const SliderBox = styled(Box)({
   width: "620px",
@@ -30,6 +28,7 @@ const SliderBox = styled(Box)({
   display: "flex",
   justifyContent: "center",
 });
+
 const marks = [
   {
     value: 0,
@@ -72,8 +71,9 @@ export default function BudgetInputFormat() {
   const [firstDate, setFirstDate] = useState<Date | null>(null);
   const [secondDate, setSecondDate] = useState<Date | null>(null);
   const [open, setOpen] = useState(false);
+  const [error, setError] = useState(false);
+
   const setSubmitFormat = useSetRecoilState(submitFormat);
-  const handleOpen = () => setOpen(true);
   const changeAmount = (e) => setAmount(e.target.value);
   const changePercent = (e) => setPercent(e.target.value);
 
@@ -85,6 +85,10 @@ export default function BudgetInputFormat() {
     setAmount(0);
   };
 
+  function isNumber(value?: number): boolean {
+    return value != null && !isNaN(Number(value.toString()));
+  }
+
   // recoilstate로 쓸때 계산을 위한 함수
   function calculatePercent() {
     const percentArray: number[] = [];
@@ -94,9 +98,21 @@ export default function BudgetInputFormat() {
     percentArray[0] = percent[0];
     setPercent(percentArray);
   }
+
   function onClickSave() {
-    calculatePercent();
-    handleOpen();
+    const checkIfNumber = isNumber(amount);
+
+    if (
+      checkIfNumber &&
+      parseInt(amount) > 0 &&
+      firstDate !== null &&
+      secondDate !== null
+    ) {
+      setAmount(parseInt(amount));
+      setOpen(true);
+      calculatePercent();
+      setError(false);
+    } else setError(true);
   }
 
   function onClickSubmit() {
@@ -111,23 +127,42 @@ export default function BudgetInputFormat() {
 
   return (
     <>
+      {error && (
+        <Alert variant="filled" severity="error" sx={{ mb: 2 }}>
+          please check your inputs!
+        </Alert>
+      )}
       <Divider>
         <Chip variant="outlined" label="여행 일정" />
       </Divider>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DemoContainer components={["DatePicker", "DatePicker"]}>
-          <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
             <DatePicker
               sx={{ width: "45%", mr: 5 }}
+              disablePast
               label="출발일"
               value={firstDate}
+              format={"YYYY-MM-DD"}
+              formatDensity="spacious"
+              maxDate={secondDate}
               onChange={(newDate) => setFirstDate(newDate)}
             />
             <Typography variant="h6">~</Typography>
             <DatePicker
               sx={{ width: "45%", ml: 5 }}
+              disablePast
               label="도착일"
+              minDate={firstDate}
               value={secondDate}
+              format={"YYYY-MM-DD"}
+              formatDensity="spacious"
               onChange={(newDate) => {
                 setSecondDate(newDate);
               }}
@@ -143,13 +178,13 @@ export default function BudgetInputFormat() {
           my: 3,
         }}
       >
-        <FormControl fullWidth onChange={changeAmount}>
-          <InputLabel>예산을 입력해주세요</InputLabel>
-          <OutlinedInput
-            startAdornment={<InputAdornment position="end">₩</InputAdornment>}
-            label="예산을 입력해주세요"
-          />
-        </FormControl>
+        <TextField
+          fullWidth
+          value={amount}
+          onChange={changeAmount}
+          error={error}
+          helperText="문자열이 포함되거나 0으로 시작할 수 없습니다"
+        ></TextField>
       </Box>
       <Divider>
         <Chip sx={{ mr: 2 }} variant="outlined" label="탈것" color="primary" />
@@ -177,7 +212,7 @@ export default function BudgetInputFormat() {
         />
       </SliderBox>
       <Divider sx={{ my: 3 }} />
-      <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+      <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
         <Button
           variant="contained"
           endIcon={<SendIcon />}
