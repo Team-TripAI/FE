@@ -9,6 +9,7 @@ import {
   Container,
 } from "@mui/material";
 import { styled } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const HeroCard = styled(CardMedia)({
   width: "1440px",
@@ -25,6 +26,7 @@ const LogoHero = styled(Typography)({
 });
 
 export default function MainPage() {
+  const navigate = useNavigate();
   return (
     <>
       <Container>
@@ -42,10 +44,18 @@ export default function MainPage() {
             </Typography>
           </CardContent>
           <CardActions sx={{ position: "relative", justifyContent: "center" }}>
-            <Button size="small" color="inherit">
+            <Button
+              onClick={() => navigate("/imageplace")}
+              size="small"
+              color="inherit"
+            >
               사진으로 찾기
             </Button>
-            <Button size="small" color="inherit">
+            <Button
+              onClick={() => navigate("/budget")}
+              size="small"
+              color="inherit"
+            >
               예산으로 찾기
             </Button>
           </CardActions>

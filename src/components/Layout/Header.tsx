@@ -11,11 +11,29 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { useNavigate } from "react-router-dom";
+import { styled } from "@mui/material";
 
-const pages = ["예산으로 찾기", "사진으로 찾기"];
 const settings = ["마이페이지", "쓴 글 목록", "로그아웃"];
 
+const BootstrapButton = styled(Button)({
+  boxShadow: "none",
+  textTransform: "none",
+  fontSize: 30,
+  lineHeight: 1.5,
+  color: "black",
+  fontFamily: "mono-space",
+  "&:active": {
+    boxShadow: "none",
+  },
+  "&:focused": {
+    boxShadow: "none",
+  },
+});
+
 const Header = () => {
+  const navigate = useNavigate();
+
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -44,34 +62,25 @@ const Header = () => {
         <Toolbar disableGutters>
           {/* 화면 클때 메뉴바 펼침 */}
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ color: "black", display: "block" }}
-              >
-                {page}
-              </Button>
-            ))}
+            <Button
+              onClick={() => navigate("/budget")}
+              sx={{ color: "black", display: "block" }}
+            >
+              예산으로 찾기
+            </Button>
+            <Button
+              onClick={() => navigate("/imageplace")}
+              sx={{ color: "black", display: "block" }}
+            >
+              사진으로 찾기
+            </Button>
           </Box>
           {/* 화면 클때 LOGO */}
           <Box sx={{ flexGrow: 1.3, display: { xs: "none", md: "flex" } }}>
-            <Typography
-              variant="h5"
-              noWrap
-              component="a"
-              sx={{
-                fontFamily: "initial",
-                fontWeight: 500,
-                letterSpacing: ".3rem",
-                color: "black",
-                textDecoration: "none",
-              }}
-            >
+            <BootstrapButton onClick={() => navigate("/main")}>
               TripAI
-            </Typography>
+            </BootstrapButton>
           </Box>
-
           {/* 맨 오른쪽 아이콘 */}
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
