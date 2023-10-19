@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import AWS from 'aws-sdk';
 import styled from 'styled-components';
+import uploadimg from '../../imgs/uploadimg.png';
 
 const Container = styled.div`
     display: flex;
@@ -12,6 +13,7 @@ const Container = styled.div`
 const Box = styled.div`
     width: 100%;
     display: flex;
+    flex-direction: column;
     align-items: center;
 `;
 const UploadBox = styled.div`
@@ -71,7 +73,7 @@ const ImageUploader = () => {
             params: {
                 ACL: 'public-read',
                 Bucket: 'tripai-test-bucket',
-                Key: `upload/${imageFile.name}`,
+                Key: `upload/${new Date().getTime().toString() + imageFile.name}`, //ms단위로 파일명 생성
                 Body: imageFile,
             },
         });
@@ -88,8 +90,12 @@ const ImageUploader = () => {
     return (
         <Container>
             <Box>
-                <a href={location}>{location}</a>
-                {imageSrc ? <Img src={imageSrc} alt="image preview" width={'100%'} /> : <Img src="" alt="none" />}
+                {imageSrc ? (
+                    <Img src={imageSrc} alt="image preview" width={'100%'} />
+                ) : (
+                    <Img src={uploadimg} alt="none" />
+                )}
+                {/* <a href={location}>{location}</a> */}
             </Box>
             <UploadBox>
                 <input
