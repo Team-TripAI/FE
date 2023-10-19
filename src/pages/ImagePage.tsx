@@ -32,20 +32,20 @@ const ImagePage = () => {
         <Wrapper>
             <ThemeProvider theme={defaultTheme}>
                 <CssBaseline />
-                <AppBar position="relative">
+                {/* <AppBar position="relative">
                     <Toolbar>
                         <CameraIcon sx={{ mr: 2 }} />
                         <Typography variant="h6" color="inherit" noWrap>
                             이미지 기반 추천
                         </Typography>
                     </Toolbar>
-                </AppBar>
+                </AppBar> */}
                 <main>
                     {/* Hero unit */}
                     <Box
                         sx={{
                             bgcolor: 'background.paper',
-                            pt: 8,
+                            pt: 18,
                             pb: 6,
                         }}
                     >
