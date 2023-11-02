@@ -20,13 +20,19 @@ import { useNavigate } from 'react-router-dom';
 const Wrapper = styled.div`
     width: 100vw;
 `;
+const OauthBox = styled.div`
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+`;
 
 const theme = createTheme();
 
 const LoginPage = () => {
     const navigate = useNavigate();
 
-    const clientId = 'clientID';
+    // const clientId = 'clientID';
+    const CLIENT_ID = import.meta.env.VITE_CLIENT_ID;
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -84,16 +90,21 @@ const LoginPage = () => {
                             </Button>
                         </Box>
                     </Box>
-                    <GoogleOAuthProvider clientId={clientId}>
-                        <GoogleLogin
-                            onSuccess={(res) => {
-                                console.log(res);
-                            }}
-                            onFailure={(err) => {
-                                console.log(err);
-                            }}
-                        />
-                    </GoogleOAuthProvider>
+                    <OauthBox>
+                        <GoogleOAuthProvider clientId={CLIENT_ID}>
+                            <GoogleLogin
+                                onSuccess={(res) => {
+                                    console.log(res);
+                                }}
+                                // onFailure={(err) => {
+                                //     console.log(err);
+                                // }}
+                                onError={() => {
+                                    console.log('Login Failed');
+                                }}
+                            />
+                        </GoogleOAuthProvider>
+                    </OauthBox>
                     <Grid
                         sx={{
                             display: 'flex',
