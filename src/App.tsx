@@ -7,6 +7,7 @@ import BudgetInputPage from './pages/budget/BudgetInputPage.tsx';
 import LoginPage from './pages/LoginPage.tsx';
 import SignupPage from './pages/SignupPage.tsx';
 import ImagePage from './pages/ImagePage.tsx';
+import MyPage from './pages/MyPage.tsx';
 import { RecoilRoot } from 'recoil';
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
                     <Route path="/" element={<Navigate to="/main" />} />
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/signup" element={<SignupPage />} />
+                    <Route path="/mypage" element={<MyPage />} />
                     <Route path="/main" element={<MainPage />} />
                     <Route path="/imageplace" element={<ImagePage />} />
                     <Route path="/budget" element={<BudgetMainPage />} />

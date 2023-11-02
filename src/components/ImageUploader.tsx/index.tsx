@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import AWS from 'aws-sdk';
 import styled from 'styled-components';
 import uploadimg from '../../imgs/uploadimg.png';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 const Container = styled.div`
     display: flex;
@@ -24,6 +25,12 @@ const UploadBox = styled.div`
 `;
 const Img = styled.img`
     border-radius: 5px;
+`;
+
+const Button = styled.button`
+    display: flex;
+    align-items: center;
+    gap: 10px;
 `;
 
 const ImageUploader = () => {
@@ -106,7 +113,7 @@ const ImageUploader = () => {
                     ref={(el) => (inputRef.current[0] = el)}
                     onChange={(e) => onUpload(e)}
                 />
-                <button
+                <Button
                     type="button"
                     onClick={() => {
                         if (!imageSrc) {
@@ -119,8 +126,9 @@ const ImageUploader = () => {
                         uploadS3();
                     }}
                 >
+                    <CloudUploadIcon />
                     UPLOAD
-                </button>
+                </Button>
             </UploadBox>
 
             {/* <img src={location} alt="이미지" /> */}
