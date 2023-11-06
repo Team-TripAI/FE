@@ -74,9 +74,15 @@ const Header = () => {
             >
               사진으로 찾기
             </Button>
+            <Button
+              onClick={() => navigate("/community")}
+              sx={{ color: "black", display: "block" }}
+            >
+              커뮤니티
+            </Button>
           </Box>
           {/* 화면 클때 LOGO */}
-          <Box sx={{ flexGrow: 1.3, display: { xs: "none", md: "flex" } }}>
+          <Box sx={{ flexGrow: 1.55, display: { xs: "none", md: "flex" } }}>
             <BootstrapButton onClick={() => navigate("/main")}>
               TripAI
             </BootstrapButton>
