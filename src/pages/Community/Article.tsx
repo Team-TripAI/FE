@@ -38,41 +38,41 @@ const postedArticle = {
   commentList: [
     {
       commentId: 1,
-      content: "댓글1",
+      content: "안녕하세요 박수영입니다",
       isParent: true,
-      nickname: "닉네임",
+      nickname: "박수영",
       createDate: "2023-10-31T01:01:22.561065",
       modifyDate: "2023-10-31T01:01:22.561065",
     },
     {
       commentId: 5,
-      content: "대댓글5",
+      content: "안녕하세요 박지안입니다",
       isParent: false,
-      nickname: "닉네임",
+      nickname: "박지안",
       createDate: "2023-10-31T01:01:59.841109",
       modifyDate: "2023-10-31T01:01:59.841109",
     },
     {
       commentId: 2,
-      content: "댓글2",
+      content: "안녕하세요 박정환입니다",
       isParent: true,
-      nickname: "닉네임",
+      nickname: "박정환",
       createDate: "2023-10-31T01:01:33.237118",
       modifyDate: "2023-10-31T01:01:33.237118",
     },
     {
       commentId: 3,
-      content: "대댓글3",
+      content: "안녕하세요 정준서입니다",
       isParent: false,
-      nickname: "닉네임",
+      nickname: "정준서",
       createDate: "2023-10-31T01:01:45.984579",
       modifyDate: "2023-10-31T01:01:45.984579",
     },
     {
       commentId: 4,
-      content: "대댓글4",
+      content: "안녕하세요 허동윤입니다",
       isParent: false,
-      nickname: "닉네임",
+      nickname: "허동윤",
       createDate: "2023-10-31T01:01:52.082025",
       modifyDate: "2023-10-31T01:01:52.082025",
     },
@@ -113,9 +113,7 @@ export default function Article() {
             <Typography>{postedArticle.content}</Typography>
           </ContentBox>
           <Divider />
-          <ContentBox>
-            <Comments {...postedArticle.commentList}></Comments>
-          </ContentBox>
+          <Comments comments={postedArticle.commentList}></Comments>
         </MainContainer>
       </Wrapper>
     </>
