@@ -10,8 +10,8 @@ import ImagePage from "./pages/ImagePage.tsx";
 import MyPage from "./pages/MyPage.tsx";
 import Community from "./pages/Community/Community.tsx";
 import Post from "./pages/Community/Post.tsx";
-import Posted from "./components/Posted/Posted.tsx";
 import { RecoilRoot } from "recoil";
+import Article from "./pages/Community/Article.tsx";
 
 function App() {
   return (
@@ -29,7 +29,7 @@ function App() {
           <Route path="/budget/input" element={<BudgetInputPage />} />
           <Route path="/community">
             <Route index element={<Community />} />
-            <Route path=":postId" element={<Posted />} />
+            <Route path=":postId" element={<Article />} />
             <Route path="post" element={<Post />} />
           </Route>
         </Routes>
