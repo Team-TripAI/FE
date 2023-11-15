@@ -1,8 +1,10 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import AWS from 'aws-sdk';
 import styled from 'styled-components';
 import uploadimg from '../../imgs/uploadimg.png';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import getVision from './getVision';
+import base64encoding from './base64encoding';
 
 const Container = styled.div`
     display: flex;
@@ -37,7 +39,32 @@ const ImageUploader = () => {
     const [imageFile, setImageFile]: any = useState(null);
     const [imageSrc, setImageSrc]: any = useState(null);
     const inputRef: any = useRef([]);
-    const [location, setLocation] = useState<string>(''); //주소
+    const [url, setUrl] = useState<string>(''); //이미지 url
+    const [base64Image, setBase64Image] = useState('');
+
+    // 이미지 url을 base64로 인코딩
+    useEffect(() => {
+        base64encoding(url)
+            .then((base64) => {
+                const pureBase64Image = base64
+                    .replace('data:image/jpeg;base64,', '')
+                    .replace('data:image/png;base64,', '')
+                    .replace('data:image/jpg;base64,', '');
+                setBase64Image(pureBase64Image);
+            })
+            .catch((error) => {
+                console.error('Error converting image:', error);
+            });
+    }, [url]);
+
+    // Base64 이미지가 준비되면 getVision 함수 호출
+    useEffect(() => {
+        if (base64Image) {
+            getVision(base64Image)
+                .then((data) => console.log('returned data:', data))
+                .catch((error) => console.error(error));
+        }
+    }, [base64Image]);
 
     const onUpload = (e: any) => {
         const file = e.target.files[0];
@@ -45,7 +72,7 @@ const ImageUploader = () => {
 
         // 확장자 제한
         if (!['jpeg', 'png', 'jpg', 'JPG', 'PNG', 'JPEG'].includes(fileExt)) {
-            alert('jpg, png, jpg 파일만 업로드가 가능합니다.');
+            alert('jpeg, png, jpg 파일만 업로드가 가능합니다.');
             return;
         }
 
@@ -79,7 +106,7 @@ const ImageUploader = () => {
         const upload = new AWS.S3.ManagedUpload({
             params: {
                 ACL: 'public-read',
-                Bucket: 'tripai-test-bucket',
+                Bucket: 'tripai-bucket',
                 Key: `upload/${new Date().getTime().toString() + imageFile.name}`, //ms단위로 파일명 생성
                 Body: imageFile,
             },
@@ -88,7 +115,7 @@ const ImageUploader = () => {
         try {
             const data = await upload.promise();
             console.log(data);
-            setLocation(data.Location);
+            setUrl(data.Location);
         } catch (error) {
             console.log(error);
         }
@@ -102,7 +129,7 @@ const ImageUploader = () => {
                 ) : (
                     <Img src={uploadimg} alt="none" />
                 )}
-                {/* <a href={location}>{location}</a> */}
+                {/* <a href={url}>{url}</a> */}
             </Box>
             <UploadBox>
                 <input
@@ -131,7 +158,7 @@ const ImageUploader = () => {
                 </Button>
             </UploadBox>
 
-            {/* <img src={location} alt="이미지" /> */}
+            <img src={url} alt="이미지" />
         </Container>
     );
 };
