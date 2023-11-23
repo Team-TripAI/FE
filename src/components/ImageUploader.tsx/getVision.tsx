@@ -31,11 +31,11 @@ const getVision = async (image: string) => {
         );
 
         const colors = response.data.responses[0].imagePropertiesAnnotation.dominantColors.colors;
-        const hexColorList = colors.map((color) => rgbToHex(color.color.red, color.color.green, color.color.blue));
+        const hexColorList = colors.map((color: any) => rgbToHex(color.color.red, color.color.green, color.color.blue));
 
         // 레이블 리스트 추출
         const labels = response.data.responses[0].labelAnnotations;
-        const labelList = labels.map((label) => label.description);
+        const labelList = labels.map((label: any) => label.description);
 
         console.log('hexColorList:', hexColorList);
         console.log('labelList:', labelList);
