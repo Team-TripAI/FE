@@ -33,21 +33,29 @@ const InputPaper = styled(Paper)({
 });
 
 export default function BudgetMainPage() {
+  const handleClick = () => {
+    console.log("clicked");
+  };
   return (
     <>
       <MainContainer maxWidth="xl">
         <ContentBox>
-          <Typography variant="h5">가고싶은 여행지를 검색하세요</Typography>
-          <InputPaper>
+          <Typography variant="h5">가고싶은 여행지를 선택하세요</Typography>
+          {/* <InputPaper>
             <InputBase
               sx={{ ml: 1, flex: 1 }}
               placeholder="도시, 국가를 검색해보세요."
               inputProps={{ "aria-label": "search google maps" }}
             />
-            <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
+            <IconButton
+              type="button"
+              sx={{ p: "10px" }}
+              aria-label="search"
+              onClick={handleClick}
+            >
               <SearchIcon />
             </IconButton>
-          </InputPaper>
+          </InputPaper> */}
         </ContentBox>
         <Posted></Posted>
       </MainContainer>
