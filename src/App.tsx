@@ -12,6 +12,7 @@ import Community from "./pages/Community/Community.tsx";
 import Post from "./pages/Community/Post.tsx";
 import { RecoilRoot } from "recoil";
 import Article from "./pages/Community/Article.tsx";
+import BudgetSelectPage from "./pages/budget/BudgetSelectPage/BudgetSelectPage.tsx";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path="/imageplace" element={<ImagePage />} />
           <Route path="/budget" element={<BudgetMainPage />} />
           <Route path="/budget/input" element={<BudgetInputPage />} />
+          <Route path="/budget/select" element={<BudgetSelectPage />} />
           <Route path="/community">
             <Route index element={<Community />} />
             <Route path=":postId" element={<Article />} />
