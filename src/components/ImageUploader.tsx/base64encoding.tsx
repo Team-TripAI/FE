@@ -10,7 +10,7 @@ const base64encoding = async (url: string): Promise<string> => {
             canvas.width = img.width;
             canvas.height = img.height;
             const ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0);
+            ctx?.drawImage(img, 0, 0);
             const dataURL = canvas.toDataURL('image/jpeg');
             resolve(dataURL);
         };

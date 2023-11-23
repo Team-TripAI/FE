@@ -158,7 +158,7 @@ const ImageUploader = () => {
                 </Button>
             </UploadBox>
 
-            <img src={url} alt="이미지" />
+            {/* <img src={url} alt="이미지" /> */}
         </Container>
     );
 };
