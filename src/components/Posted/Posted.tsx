@@ -1,9 +1,22 @@
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import ImageListItemBar from "@mui/material/ImageListItemBar";
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+
+interface ItemData {
+  img: string;
+  title: string;
+}
 
 export default function Posted() {
+  const navigate = useNavigate();
+
+  const handleClick = (item: ItemData) => {
+    const itemData = item;
+    navigate("/budget/input", { state: { item: itemData } });
+  };
+
   return (
     <>
       <Box
@@ -21,7 +34,9 @@ export default function Posted() {
                 alt={item.title}
                 loading="lazy"
               />
-              <ImageListItemBar title={item.title} position="bottom" />
+              <Button onClick={() => handleClick(item)}>
+                <ImageListItemBar title={item.title} position="bottom" />
+              </Button>
             </ImageListItem>
           ))}
         </ImageList>
@@ -30,53 +45,37 @@ export default function Posted() {
   );
 }
 
-const itemData = [
+const itemData: ItemData[] = [
   {
     img: "https://rimage.gnst.jp/livejapan.com/public/article/detail/a/00/04/a0004721/img/ko/a0004721_parts_5fab2f30a98c3.jpg?20230830000000&amp;q=80",
     title: "일본 도쿄",
   },
   {
-    img: "https://a.cdn-hotels.com/gdcs/production10/d1330/2d7cb431-f9c5-4458-b1b0-0f6f9cae9acc.jpg",
-    title: "중국 상하이",
+    img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRUHZIRiTD1US7aDGwGRXMFBVCnjgo-jhN_A&usqp=CAU",
+    title: "대한민국 제주도",
   },
   {
-    img: "https://images.unsplash.com/photo-1522770179533-24471fcdba45",
-    title: "Camera",
+    img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGSLort3sXmsVR4QGX4V34D7Xhxx8MtwqWHA&usqp=CAU",
+    title: "일본 오사카",
   },
   {
-    img: "https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c",
-    title: "Coffee",
+    img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0ChbANipS9lQn8QlDVSLdUOQUbTlBf_AWbg&usqp=CAU",
+    title: "일본 삿포로",
   },
   {
-    img: "https://images.unsplash.com/photo-1533827432537-70133748f5c8",
-    title: "Hats",
+    img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDEwGljbtf953waOU6Kdji8rYq2vS505s0YA&usqp=CAU",
+    title: "미국 LA",
   },
   {
-    img: "https://images.unsplash.com/photo-1558642452-9d2a7deb7f62",
-    title: "Honey",
+    img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTU-Oiuw0qRnDtszYr5-EpF4FazYJMHiS43Vw&usqp=CAU",
+    title: "프랑스 파리",
   },
   {
-    img: "https://images.unsplash.com/photo-1516802273409-68526ee1bdd6",
-    title: "Basketball",
+    img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTl_sChrYf8x3ulZhFfBkdW0biiYnSb5bqzUQ&usqp=CAU",
+    title: "영국 런던",
   },
   {
-    img: "https://images.unsplash.com/photo-1518756131217-31eb79b20e8f",
-    title: "Fern",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1597645587822-e99fa5d45d25",
-    title: "Mushrooms",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1567306301408-9b74779a11af",
-    title: "Tomato basil",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1567306301408-9b74779a11af",
-    title: "Tomato basil",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1567306301408-9b74779a11af",
-    title: "Tomato basil",
+    img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtr-p8mYvnK7UNDXQARWQduVcq5CYvrHzDDg&usqp=CAU",
+    title: "독일 뮌헨",
   },
 ];
