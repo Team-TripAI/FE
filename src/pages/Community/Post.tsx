@@ -3,19 +3,19 @@ import ImageUploader from "../../components/ImageUploader.tsx";
 import { Button, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { Box } from "@mui/material";
+import { StandaloneSearchBox, useJsApiLoader } from "@react-google-maps/api";
+import { useRef } from "react";
 
 const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
   display: flex;
-  align-items: center;
+  margin-top: 100px;
 `;
 
 const ImageDiv = styled.div`
-  width: 50%;
-  height: 70%;
-  display: flex;
-  align-items: center;
+  width: 50vw;
+  height: 50vh;
 `;
 
 const PostDiv = styled.div`
@@ -30,6 +30,18 @@ const TitleInput = styled.textarea`
   resize: none;
   padding: 10px;
   border-radius: 12px;
+  &:focus {
+    outline: none;
+  }
+`;
+const LocationInput = styled.input`
+  width: 45vw;
+  height: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  border-style: solid;
+  border-width: 1px;
   &:focus {
     outline: none;
   }
@@ -58,10 +70,13 @@ export function PostForm({
     handleSubmit,
     // formState: { isSubmitting, isSubmitted, errors },
   } = useForm();
+
   return (
     <PostDiv>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Box sx={{ width: "100%", mx: 2 }}>
+          <Typography>장소</Typography>
+          <AutoComplete />
           <Typography>제목</Typography>
           <TitleInput
             {...register("title", {
@@ -82,7 +97,11 @@ export function PostForm({
           />
         </Box>
         <Box sx={{ display: "flex", justifyContent: "flex-end", m: 2 }}>
-          <Button variant="outlined" type="submit">
+          <Button
+            variant="outlined"
+            type="submit"
+            sx={{ color: "black", borderColor: "black" }}
+          >
             게시글 쓰기
           </Button>
         </Box>
@@ -90,6 +109,38 @@ export function PostForm({
     </PostDiv>
   );
 }
+
+const AutoComplete = () => {
+  const inputRef = useRef();
+  const { isLoaded, loadError } = useJsApiLoader({
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_API,
+    libraries: ["places"],
+  });
+
+  const handlePlaceChanged = () => {
+    const [place] = inputRef.current.getPlaces();
+    if (place) {
+      console.log(place.formatted_address);
+      console.log(place.geometry.location.lat());
+      console.log(place.geometry.location.lng());
+    }
+  };
+
+  return (
+    isLoaded && (
+      <StandaloneSearchBox
+        onLoad={(ref) => (inputRef.current = ref)}
+        onPlacesChanged={handlePlaceChanged}
+      >
+        <LocationInput
+          type="text"
+          className="form-control"
+          placeholder="놀러간 장소를 입력해주세요"
+        />
+      </StandaloneSearchBox>
+    )
+  );
+};
 
 export default function Post() {
   return (
