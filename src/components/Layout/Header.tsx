@@ -16,6 +16,16 @@ import { styled } from "@mui/material";
 
 const settings = ["마이페이지", "쓴 글 목록", "로그아웃"];
 
+const MenuButton = styled(Button)({
+  color: "black",
+  display: "block",
+  boxShadow: "none",
+  "&:active": {
+    background: "inherit",
+    boxShadow: "none",
+  },
+});
+
 const BootstrapButton = styled(Button)({
   boxShadow: "none",
   textTransform: "none",
@@ -23,11 +33,8 @@ const BootstrapButton = styled(Button)({
   lineHeight: 1.5,
   color: "black",
   fontFamily: "mono-space",
-  "&:active": {
-    boxShadow: "none",
-  },
-  "&:focused": {
-    boxShadow: "none",
+  "&:hover": {
+    background: "inherit",
   },
 });
 
@@ -62,28 +69,19 @@ const Header = () => {
         <Toolbar disableGutters>
           {/* 화면 클때 메뉴바 펼침 */}
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            <Button
-              onClick={() => navigate("/budget")}
-              sx={{ color: "black", display: "block" }}
-            >
+            <MenuButton onClick={() => navigate("/budget")}>
               예산으로 찾기
-            </Button>
-            <Button
-              onClick={() => navigate("/imageplace")}
-              sx={{ color: "black", display: "block" }}
-            >
+            </MenuButton>
+            <MenuButton onClick={() => navigate("/imageplace")}>
               사진으로 찾기
-            </Button>
-            <Button
-              onClick={() => navigate("/community")}
-              sx={{ color: "black", display: "block" }}
-            >
+            </MenuButton>
+            <MenuButton onClick={() => navigate("/community")}>
               커뮤니티
-            </Button>
+            </MenuButton>
           </Box>
           {/* 화면 클때 LOGO */}
           <Box sx={{ flexGrow: 1.55, display: { xs: "none", md: "flex" } }}>
-            <BootstrapButton onClick={() => navigate("/main")}>
+            <BootstrapButton disableRipple onClick={() => navigate("/main")}>
               TripAI
             </BootstrapButton>
           </Box>
