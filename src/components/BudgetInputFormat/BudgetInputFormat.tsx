@@ -20,6 +20,7 @@ import { submitFormat } from "../../constants/atoms";
 import { styled } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import { Alert } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const SliderBox = styled(Box)({
   width: "45vw",
@@ -72,6 +73,7 @@ export default function BudgetInputFormat() {
   const [secondDate, setSecondDate] = useState<Date | null>(null);
   const [open, setOpen] = useState(false);
   const [error, setError] = useState(false);
+  const navigate = useNavigate();
 
   const setSubmitFormat = useSetRecoilState(submitFormat);
   const changeAmount = (e: any) => setAmount(e.target.value);
@@ -123,6 +125,7 @@ export default function BudgetInputFormat() {
       money: amount,
       percentage: percent,
     }));
+    navigate("/budget/select");
   }
 
   return (

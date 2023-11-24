@@ -5,7 +5,6 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import styled from "styled-components";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -55,66 +54,59 @@ const cards = [
   },
 ];
 
-const defaultTheme = createTheme();
-
 export default function Community() {
   const navigate = useNavigate();
 
   return (
     <Wrapper>
-      <ThemeProvider theme={defaultTheme}>
-        <Container>
-          <Box sx={{ mt: 10 }}>
-            <Typography
-              gutterBottom
-              variant="h4"
-              component="h2"
-              textAlign="center"
-            >
-              Share your experiences
-            </Typography>
-          </Box>
-          <Box sx={{ display: "flex", justifyContent: "flex-end", p: 3 }}>
-            <PostButton onClick={() => navigate("/community/post")}>
-              경험 공유하기
-            </PostButton>
-          </Box>
-          <Grid container spacing={10}>
-            {cards.map((card) => (
-              <Grid item key={card.id} xs={12} sm={6} md={3}>
-                <Card
+      <Container sx={{ height: "100vh", mt: 13 }}>
+        <Box>
+          <Typography
+            gutterBottom
+            variant="h4"
+            component="h2"
+            textAlign="center"
+            fontFamily=""
+          >
+            경험을 공유하세요!
+          </Typography>
+        </Box>
+        <Box sx={{ display: "flex", justifyContent: "flex-end", p: 3 }}>
+          <PostButton onClick={() => navigate("/community/post")}>
+            경험 공유하기
+          </PostButton>
+        </Box>
+        <Grid container spacing={10}>
+          {cards.map((card) => (
+            <Grid item key={card.id} xs={12} sm={6} md={3}>
+              <Card
+                sx={{
+                  width: "100%",
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+                onClick={() => navigate(`/community/${card.id}`)}
+              >
+                <CardMedia
+                  component="div"
                   sx={{
-                    width: "100%",
-                    height: "100%",
-                    display: "flex",
-                    flexDirection: "column",
+                    // 16:9
+                    pt: "56.25%",
                   }}
-                >
-                  <CardMedia
-                    component="div"
-                    sx={{
-                      // 16:9
-                      pt: "56.25%",
-                    }}
-                    image="https://source.unsplash.com/random?wallpapers"
-                  />
-                  <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      <Button
-                        sx={{ p: 0 }}
-                        onClick={() => navigate(`/community/${card.id}`)}
-                      >
-                        {card.location}
-                      </Button>
-                    </Typography>
-                    <Typography>{card.address}</Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        </Container>
-      </ThemeProvider>
+                  image="https://source.unsplash.com/random?wallpapers"
+                />
+                <CardContent sx={{ flexGrow: 1 }}>
+                  <Typography gutterBottom fontFamily="mono-space">
+                    {card.location}
+                  </Typography>
+                  <Typography>{card.address}</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
     </Wrapper>
   );
 }

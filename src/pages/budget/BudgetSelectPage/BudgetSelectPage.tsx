@@ -6,6 +6,8 @@ import SelectFlight from "./SelectFlight";
 import SelectRestaurant from "./SelectRestaurant";
 import SelectAttraction from "./SelectAttraction";
 import { useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { submitFormat } from "../../../constants/atoms";
 
 const MainContainer = styled.div`
   width: 100vw;
@@ -19,6 +21,8 @@ const MainContainer = styled.div`
 export default function BudgetSelectPage() {
   const [page, setPage] = useState<number>(0);
   const navigate = useNavigate();
+  // recoil value 가져와서 api 호출하기
+  const format = useRecoilValue(submitFormat);
 
   const nextPage = () => {
     setPage((prevPage) => prevPage + 1);
@@ -32,6 +36,7 @@ export default function BudgetSelectPage() {
   switch (page) {
     case 0:
       pageContent = <SelectFlight />;
+      console.log();
       break;
     case 1:
       pageContent = <SelectAccommodation />;
