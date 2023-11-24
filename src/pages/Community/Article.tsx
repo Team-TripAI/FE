@@ -80,7 +80,6 @@ const postedArticle = {
 };
 
 export default function Article() {
-  const postId = useParams();
   return (
     <>
       <CssBaseline />
