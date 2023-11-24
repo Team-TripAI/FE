@@ -13,6 +13,7 @@ import Post from "./pages/Community/Post.tsx";
 import { RecoilRoot } from "recoil";
 import Article from "./pages/Community/Article.tsx";
 import BudgetSelectPage from "./pages/budget/BudgetSelectPage/BudgetSelectPage.tsx";
+import { Budgets } from "aws-sdk";
 
 function App() {
   return (
@@ -26,9 +27,11 @@ function App() {
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/main" element={<MainPage />} />
           <Route path="/imageplace" element={<ImagePage />} />
-          <Route path="/budget" element={<BudgetMainPage />} />
-          <Route path="/budget/input" element={<BudgetInputPage />} />
-          <Route path="/budget/select" element={<BudgetSelectPage />} />
+          <Route path="/budget">
+            <Route index element={<BudgetMainPage />} />
+            <Route path="/budget/input" element={<BudgetInputPage />} />
+            <Route path="/budget/select" element={<BudgetSelectPage />} />
+          </Route>
           <Route path="/community">
             <Route index element={<Community />} />
             <Route path=":postId" element={<Article />} />

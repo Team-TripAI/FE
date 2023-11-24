@@ -9,27 +9,24 @@ import BudgetInputFormat from "../../components/BudgetInputFormat";
 import { styled } from "@mui/material";
 import { useLocation } from "react-router-dom";
 
-// BudgetMainPage에서 지명을 받아서
-// 그에 맞는 사진 가져오고 띄우기
-
 const MainContainer = styled(Container)({
   marginTop: 65,
-  width: "1440px",
-  height: "750px",
+  width: "100vw",
+  height: "80vh",
   display: "flex",
   justifyContent: "center",
-  paddingTop: 20,
 });
 
 const ImageCard = styled(CardMedia)({
-  width: "650px",
-  height: "450px",
-  borderRadius: "10px",
+  width: "50vw",
+  height: "65vh",
+  borderRadius: "15px",
   marginBottom: 10,
 });
 
 const PlaceInfoCard = styled(CardContent)({
   padding: 0,
+  marginTop: 10,
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
@@ -45,7 +42,7 @@ export default function BudgetInputPage() {
         <Box sx={{ marginRight: "20px" }}>
           <PlaceInfoCard>
             <ImageCard image={item.img}></ImageCard>
-            <Typography variant="h4" color="black" gutterBottom>
+            <Typography variant="h6" color="black" gutterBottom>
               {item.title}
             </Typography>
           </PlaceInfoCard>

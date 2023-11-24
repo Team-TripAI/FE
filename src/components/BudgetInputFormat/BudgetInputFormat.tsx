@@ -22,7 +22,7 @@ import { DatePicker } from "@mui/x-date-pickers";
 import { Alert } from "@mui/material";
 
 const SliderBox = styled(Box)({
-  width: "620px",
+  width: "45vw",
   marginTop: 3,
   marginBottom: 3,
   display: "flex",
@@ -57,9 +57,9 @@ const modalstyle = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+  width: 500,
   bgcolor: "background.paper",
-  border: "2px solid #000",
+  border: "1px solid #519ABA",
   boxShadow: 24,
   p: 4,
   borderRadius: 12,
@@ -74,8 +74,8 @@ export default function BudgetInputFormat() {
   const [error, setError] = useState(false);
 
   const setSubmitFormat = useSetRecoilState(submitFormat);
-  const changeAmount = (e) => setAmount(e.target.value);
-  const changePercent = (e) => setPercent(e.target.value);
+  const changeAmount = (e: any) => setAmount(e.target.value);
+  const changePercent = (e: any) => setPercent(e.target.value);
 
   const handleClose = () => {
     setPercent([25, 50, 75]);
@@ -128,7 +128,7 @@ export default function BudgetInputFormat() {
   return (
     <>
       {error && (
-        <Alert variant="filled" severity="error" sx={{ mb: 2 }}>
+        <Alert variant="outlined" severity="error" sx={{ mb: 2 }}>
           please check your inputs!
         </Alert>
       )}
@@ -182,7 +182,6 @@ export default function BudgetInputFormat() {
           fullWidth
           value={amount}
           onChange={changeAmount}
-          error={error}
           helperText="문자열이 포함되거나 0으로 시작할 수 없습니다"
         ></TextField>
       </Box>
@@ -224,33 +223,31 @@ export default function BudgetInputFormat() {
       <Modal open={open} onClose={handleClose}>
         <Box sx={modalstyle}>
           <Typography variant="h6" component="h2">
-            {`출발 날짜: ${firstDate?.$y}년 ${firstDate?.$M + 1}월 ${
+            {`출발 날짜 : ${firstDate?.$y}년 ${firstDate?.$M + 1}월 ${
               firstDate?.$D
             }일`}
           </Typography>
-          <Typography variant="h6" component="h2">
-            {`도착 날짜: ${secondDate?.$y}년 ${secondDate?.$M + 1}월 ${
+          <Typography variant="h6" component="h2" sx={{ mb: 2 }}>
+            {`도착 날짜 : ${secondDate?.$y}년 ${secondDate?.$M + 1}월 ${
               secondDate?.$D
             }일`}
           </Typography>
+          <Divider />
           <Typography
             variant="h6"
-            sx={{ mt: 2 }}
+            sx={{ my: 2 }}
           >{`입력한 예산 : ${amount} ₩`}</Typography>
-          <Box sx={{ width: "100%", mb: 4 }}>
-            <Typography variant="h6" textAlign="center" sx={{ mt: 2 }}>
-              입력한 비율
+          <Divider />
+          <Box sx={{ width: "100%", my: 4 }}>
+            <Typography variant="h6" sx={{ mt: 2 }}>
+              입력 비율
             </Typography>
-            <Box sx={{ my: 2 }}>
-              <Stack spacing={2} direction="row">
-                <Paper sx={{ width: "50%" }}>{`탈것 : ${percent[0]}%`}</Paper>
-                <Paper sx={{ width: "50%" }}>{`숙박 : ${percent[1]}%`}</Paper>
-              </Stack>
-            </Box>
-            <Box>
-              <Stack spacing={2} direction="row">
-                <Paper sx={{ width: "50%" }}>{`맛집 : ${percent[2]}%`}</Paper>
-                <Paper sx={{ width: "50%" }}>{`명소 : ${percent[3]}%`}</Paper>
+            <Box sx={{ my: 2, display: "flex", justifyContent: "flex-start" }}>
+              <Stack spacing={5} direction="row">
+                <Typography color="primary">{`교통 : ${percent[0]}%`}</Typography>
+                <Typography color="secondary">{`숙박 : ${percent[1]}%`}</Typography>
+                <Typography color="green">{`맛집 : ${percent[2]}%`}</Typography>
+                <Typography color="orange">{`명소 : ${percent[3]}%`}</Typography>
               </Stack>
             </Box>
           </Box>
