@@ -8,12 +8,30 @@ import Menu from "@mui/material/Menu";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useNavigate } from "react-router-dom";
 import { styled } from "@mui/material";
 
-const settings = ["마이페이지", "쓴 글 목록", "로그아웃"];
+interface Setting {
+  name: string;
+  dest: string;
+}
+
+const settingsWithLogin: Setting[] = [
+  {
+    name: "마이페이지",
+    dest: "/mypage",
+  },
+  {
+    name: "내 글 목록",
+    dest: "/main",
+  },
+  {
+    name: "로그아웃",
+    dest: "/main",
+  },
+];
+const settingsWithoutLogin = ["로그인"];
 
 const MenuButton = styled(Button)({
   color: "black",
@@ -37,6 +55,14 @@ const BootstrapButton = styled(Button)({
   },
 });
 
+const MenuListButton = styled(Button)({
+  color: "black",
+  padding: "10px",
+  "&:active": {
+    background: "none",
+  },
+});
+
 const Header = () => {
   const navigate = useNavigate();
 
@@ -50,6 +76,14 @@ const Header = () => {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const closeUserMenu = (
+    event: React.MouseEvent<HTMLElement>,
+    setting: Setting
+  ) => {
+    setAnchorElUser(null);
+    navigate(setting.dest);
   };
 
   return (
@@ -100,16 +134,19 @@ const Header = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography
-                    fontSize="15px"
-                    fontFamily="monospace"
-                    textAlign="center"
+              {settingsWithLogin.map((setting) => (
+                <Typography
+                  fontSize="15px"
+                  fontFamily="monospace"
+                  textAlign="center"
+                  key={setting.name}
+                >
+                  <MenuListButton
+                    onClick={(event) => closeUserMenu(event, setting)}
                   >
-                    {setting}
-                  </Typography>
-                </MenuItem>
+                    {setting.name}
+                  </MenuListButton>
+                </Typography>
               ))}
             </Menu>
           </Box>

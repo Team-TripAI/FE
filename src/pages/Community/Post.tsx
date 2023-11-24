@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import ImageUploader from "../../components/ImageUploader.tsx";
-import { Button, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { Box } from "@mui/material";
 import { StandaloneSearchBox, useJsApiLoader } from "@react-google-maps/api";
@@ -11,6 +11,19 @@ const Wrapper = styled.div`
   height: 100vh;
   display: flex;
   margin-top: 100px;
+`;
+
+const PostButton = styled.button`
+  color: black;
+  border-color: black;
+  &:active {
+    background-color: black;
+    border-color: black;
+  }
+  &:hover {
+    border-color: black;
+    background-color: white;
+  }
 `;
 
 const ImageDiv = styled.div`
@@ -38,6 +51,7 @@ const LocationInput = styled.input`
   width: 45vw;
   height: 10px;
   padding: 10px;
+  font-size: 15px;
   margin-bottom: 10px;
   border-radius: 8px;
   border-style: solid;
@@ -58,6 +72,8 @@ const ContentTextarea = styled.textarea`
     outline: none;
   }
 `;
+
+const library = ["places"];
 
 export function PostForm({
   onSubmit = async (data) => {
@@ -97,13 +113,7 @@ export function PostForm({
           />
         </Box>
         <Box sx={{ display: "flex", justifyContent: "flex-end", m: 2 }}>
-          <Button
-            variant="outlined"
-            type="submit"
-            sx={{ color: "black", borderColor: "black" }}
-          >
-            게시글 쓰기
-          </Button>
+          <PostButton>게시글 쓰기</PostButton>
         </Box>
       </form>
     </PostDiv>
@@ -114,7 +124,7 @@ const AutoComplete = () => {
   const inputRef = useRef();
   const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_API,
-    libraries: ["places"],
+    libraries: library,
   });
 
   const handlePlaceChanged = () => {
