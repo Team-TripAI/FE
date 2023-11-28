@@ -16,72 +16,74 @@ interface FormValues {
   lng: number;
 }
 
+
 const Wrapper = styled.div`
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  margin-top: 100px;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    margin-top: 100px;
 `;
 
 const PostButton = styled.button`
-  color: black;
-  border-color: black;
-  &:active {
-    background-color: black;
+    color: black;
     border-color: black;
-  }
-  &:hover {
-    border-color: black;
-    background-color: white;
-  }
+    &:active {
+        background-color: black;
+        border-color: black;
+    }
+    &:hover {
+        border-color: black;
+        background-color: white;
+    }
 `;
 
 const ImageDiv = styled.div`
-  width: 50vw;
-  height: 50vh;
+    width: 50vw;
+    height: 50vh;
 `;
 
 const PostDiv = styled.div`
-  width: 50vw;
-  height: 70%;
-  display: flex;
+    width: 50vw;
+    height: 70%;
+    display: flex;
 `;
 
 const TitleInput = styled.textarea`
-  width: 45vw;
-  font-size: large;
-  resize: none;
-  padding: 10px;
-  border-radius: 12px;
-  &:focus {
-    outline: none;
-  }
+    width: 45vw;
+    font-size: large;
+    resize: none;
+    padding: 10px;
+    border-radius: 12px;
+    &:focus {
+        outline: none;
+    }
 `;
 const LocationInput = styled.input`
-  width: 45vw;
-  height: 10px;
-  padding: 10px;
-  font-size: 15px;
-  margin-bottom: 10px;
-  border-radius: 8px;
-  border-style: solid;
-  border-width: 1px;
-  &:focus {
-    outline: none;
-  }
+    width: 45vw;
+    height: 10px;
+    padding: 10px;
+    font-size: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    border-style: solid;
+    border-width: 1px;
+    &:focus {
+        outline: none;
+    }
 `;
 
 const ContentTextarea = styled.textarea`
-  width: 45vw;
-  height: 25vw;
-  font-size: medium;
-  padding: 10px;
-  border-radius: 12px;
-  resize: none;
-  &:focus {
-    outline: none;
-  }
+    width: 45vw;
+    height: 25vw;
+    font-size: medium;
+    padding: 10px;
+    border-radius: 12px;
+    resize: none;
+    &:focus {
+        outline: none;
+    }
 `;
+
 
 export function PostForm() {
   const { register, handleSubmit } = useForm<FormValues>();
@@ -160,13 +162,14 @@ export function PostForm() {
   );
 }
 
+
 export default function Post() {
-  return (
-    <Wrapper>
-      <ImageDiv>
-        <ImageUploader />
-      </ImageDiv>
-      <PostForm></PostForm>
-    </Wrapper>
-  );
+    return (
+        <Wrapper>
+            <ImageDiv>
+                <ImageUploader />
+            </ImageDiv>
+            <PostForm></PostForm>
+        </Wrapper>
+    );
 }

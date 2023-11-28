@@ -15,7 +15,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import ImageUploader from '../components/ImageUploader.tsx/index.tsx';
+import ImageUploader from '../components/ImageUploader/index.tsx';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
@@ -113,15 +113,16 @@ const ImagePage = () => {
                         </Grid>
                     </Container>
                 </main>
+
                 {/* Footer */}
-                <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
+                {/* <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
                     <Typography variant="h6" align="center" gutterBottom>
                         Footer
                     </Typography>
                     <Typography variant="subtitle1" align="center" color="text.secondary" component="p">
                         Something here to give the footer a purpose!
                     </Typography>
-                </Box>
+                </Box> */}
                 {/* End footer */}
             </ThemeProvider>
         </Wrapper>
