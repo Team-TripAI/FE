@@ -9,6 +9,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import PasswordModal from '../components/PasswordModal';
 
 const Container = styled.div`
     display: flex;
@@ -24,18 +25,21 @@ const Header = styled.div`
     align-items: center;
     justify-content: space-around;
     gap: 10rem;
-    margin: 10rem 10rem 0rem 0rem;
+    margin: 10rem 19rem 0rem 0rem;
     & > button {
         border-radius: 0.5rem;
         background-color: #f2f2f2;
         transition: background-color 0.3s ease;
         &:hover {
             background-color: #e0e0e0;
+            border: none;
         }
     }
 `;
 
 const ModifyName = styled.div`
+    width: 50%;
+    height: 10rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -77,25 +81,69 @@ const Plans = styled.div`
     }
 `;
 
+enum Action {
+    Modify,
+    Withdraw,
+}
+
 const MyPage = () => {
     const [name, setName] = useState<string>(''); //변경 이름
-    const [modify, setModify] = useState<boolean>(false);
-    const [initialName, setInitialName] = useState<string>(''); //api에서 받아오기
+    // const [modify, setModify] = useState<boolean>(false);
+    const [initialName, setInitialName] = useState<string>(''); //초기이름 받아오기
     const [nameState, setNameState] = useState<boolean>(false); //완료 버튼
 
-    const modifyName = () => {
-        setNameState(!nameState);
+    const [currentAction, setCurrentAction] = useState<Action | null>(null);
 
-        if (modify) {
-            console.log(name);
-            //post api 호출
+    const [isPasswordModalOpen, setPasswordModalOpen] = useState(false);
 
-            setInitialName(name);
-            setModify(false);
-        } else {
-            setModify(true);
+    const handlePasswordConfirm = (password: string) => {
+        if (currentAction === Action.Modify) {
+            console.log('수정 API 호출', password);
+            // 수정 API 호출 로직
+            setNameState(false);
+        } else if (currentAction === Action.Withdraw) {
+            console.log('탈퇴 API 호출', password);
+            // 탈퇴 API 호출 로직
         }
     };
+
+    // 수정
+    const handleModifyComplete = () => {
+        if (nameState) {
+            // setNameState(false);
+            setCurrentAction(Action.Modify);
+            setPasswordModalOpen(true);
+        } else {
+            setNameState(true);
+        }
+        // setCurrentAction(Action.Modify);
+        // setPasswordModalOpen(true);
+    };
+
+    // 탈퇴 버튼 클릭 시
+    const handleWithdrawClick = () => {
+        setCurrentAction(Action.Withdraw);
+        setPasswordModalOpen(true);
+    };
+
+    // const modifyName = () => {
+    //     setNameState(!nameState);
+
+    //     if (modify) {
+    //         console.log(name);
+    //         //put api 호출
+
+    //         setInitialName(name);
+    //         setModify(false);
+    //     } else {
+    //         setModify(true);
+    //     }
+    // };
+
+    // const modifyName = () => {
+    //     setNameState(!nameState);
+    //     setModify(true);
+    // };
 
     useEffect(() => {
         //get api 호출
@@ -109,12 +157,26 @@ const MyPage = () => {
         setExpanded(isExpanded ? panel : false);
     };
 
+    // const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //     setPassword(e.target.value);
+    // };
+
+    // //회원탈퇴
+    // const withdraw = () => {
+    //     //delete api 호출
+    // };
+
     return (
         <Container>
+            <PasswordModal
+                isOpen={isPasswordModalOpen}
+                onClose={() => setPasswordModalOpen(false)}
+                onConfirm={handlePasswordConfirm}
+            />
             <Header>
                 <ModifyName>
                     <div>
-                        {modify ? (
+                        {nameState ? (
                             <TextField
                                 label={initialName}
                                 variant="outlined"
@@ -131,17 +193,22 @@ const MyPage = () => {
                     </div>
 
                     {nameState ? (
-                        <Button variant="contained" color="secondary" onClick={modifyName}>
+                        <Button variant="contained" color="success" onClick={handleModifyComplete}>
                             완료
                         </Button>
                     ) : (
-                        <Button color="secondary" onClick={modifyName}>
-                            수정
-                        </Button>
+                        <>
+                            <Button variant="outlined" color="secondary" onClick={handleModifyComplete}>
+                                수정
+                            </Button>
+                            <Button variant="outlined" color="error" onClick={handleWithdrawClick}>
+                                회원 탈퇴
+                            </Button>
+                        </>
                     )}
                 </ModifyName>
 
-                {/* 페이지 이동 */}
+                {/* 커뮤니티 페이지로 리다이렉션 유저 정보 props */}
                 <button>내가 작성한 글 보러가기</button>
             </Header>
 
