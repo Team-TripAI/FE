@@ -20,12 +20,12 @@ const Container = styled.div`
     gap: 5rem;
 `;
 const Header = styled.div`
-    width: 100%;
+    width: 80%;
     display: flex;
     align-items: center;
     justify-content: space-around;
     gap: 10rem;
-    margin: 10rem 19rem 0rem 0rem;
+    margin: 10rem 19rem 0rem 22.5rem;
     & > button {
         border-radius: 0.5rem;
         background-color: #f2f2f2;
@@ -59,10 +59,14 @@ const NameField = styled.div`
     gap: 1rem;
     & > div {
         font-size: 1rem;
+        margin-top: 0.5rem;
     }
     & > p {
-        margin-bottom: 3.5rem;
+        margin-bottom: 3rem;
     }
+`;
+const NameModButton = styled(Button)`
+    height: 3em;
 `;
 const Plans = styled.div`
     display: flex;
@@ -174,13 +178,16 @@ const MyPage = () => {
                 onConfirm={handlePasswordConfirm}
             />
             <Header>
+                {/* 커뮤니티 페이지로 리다이렉션 유저 정보 props */}
+                <button>내가 작성한 글 보러가기</button>
+
                 <ModifyName>
                     <div>
                         {nameState ? (
                             <TextField
                                 label={initialName}
                                 variant="outlined"
-                                helperText="닉네임을 변경하세요"
+                                fullWidth
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                             />
@@ -193,9 +200,9 @@ const MyPage = () => {
                     </div>
 
                     {nameState ? (
-                        <Button variant="contained" color="success" onClick={handleModifyComplete}>
+                        <NameModButton variant="contained" color="success" onClick={handleModifyComplete}>
                             완료
-                        </Button>
+                        </NameModButton>
                     ) : (
                         <>
                             <Button variant="outlined" color="secondary" onClick={handleModifyComplete}>
@@ -207,9 +214,6 @@ const MyPage = () => {
                         </>
                     )}
                 </ModifyName>
-
-                {/* 커뮤니티 페이지로 리다이렉션 유저 정보 props */}
-                <button>내가 작성한 글 보러가기</button>
             </Header>
 
             {/* 각 plan을 map */}
