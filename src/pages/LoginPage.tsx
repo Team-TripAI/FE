@@ -16,6 +16,10 @@ import { GoogleLogin } from '@react-oauth/google';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { accessToken } from './../constants/accessToken';
+import { isLoggedIn } from '../constants/isLoggedIn';
+import axios from 'axios';
 
 const Wrapper = styled.div`
     width: 100vw;
@@ -31,6 +35,9 @@ const theme = createTheme();
 const LoginPage = () => {
     const navigate = useNavigate();
 
+    const [myAccessToken, setMyAccessToken] = useRecoilState(accessToken);
+    const [myIsLoggedIn, setMyIsLoggedIn] = useRecoilState(isLoggedIn);
+
     // const clientId = 'clientID';
     const CLIENT_ID = import.meta.env.VITE_CLIENT_ID;
 
@@ -41,6 +48,18 @@ const LoginPage = () => {
             email: data.get('email'),
             password: data.get('password'),
         });
+
+        //login
+
+        // 로그인 성공 시 세션스토리지에 토큰 저장
+        // setMyAccessToken({
+        //     accessToken: 'accessToken',
+        // });
+
+        // 로그인여부 세션스토리지에 저장
+        // setMyIsLoggedIn({
+        //     loginStatus: true,
+        // });
     };
 
     return (

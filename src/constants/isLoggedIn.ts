@@ -1,8 +1,8 @@
 import { atom } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
 
-export interface accessTokenType {
-    accessToken: string;
+export interface isLoggedInType {
+    loginStatus: boolean;
 }
 
 //세션스토리지에 저장
@@ -11,10 +11,11 @@ const { persistAtom } = recoilPersist({
     storage: sessionStorage,
 });
 
-export const accessToken = atom<accessTokenType>({
-    key: 'accessToken',
+//임시 값들
+export const isLoggedIn = atom<isLoggedInType>({
+    key: 'isLoggedIn',
     default: {
-        accessToken: '',
+        loginStatus: false,
     },
     effects_UNSTABLE: [persistAtom],
 });
