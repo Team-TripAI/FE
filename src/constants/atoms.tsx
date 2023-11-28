@@ -12,6 +12,6 @@ export const submitFormat = atom<SubmitFormatInterface>({
     startDate: new Date(),
     endDate: new Date(),
     money: 0,
-    percentage: [25, 50, 75, 100],
+    percentage: [],
   },
 });
