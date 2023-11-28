@@ -14,6 +14,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import axiosInstance from '../apis/axiosInstance';
 
 const Wrapper = styled.div`
     width: 100vw;
@@ -25,13 +26,20 @@ const defaultTheme = createTheme();
 const SignupPage = () => {
     const navigate = useNavigate();
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         console.log({
             email: data.get('email'),
             password: data.get('password'),
+            nickname: data.get('nickname'),
         });
+        const response = await axiosInstance.post('/signup/email', {
+            email: data.get('email'),
+            pw: data.get('password'),
+            nickname: data.get('nickname'),
+        });
+        console.log(response);
     };
 
     return (
@@ -58,11 +66,11 @@ const SignupPage = () => {
                             <Grid container spacing={2}>
                                 <Grid item xs={12}>
                                     <TextField
-                                        autoComplete="Nickname"
-                                        name="Nickname"
+                                        autoComplete="nickname"
+                                        name="nickname"
                                         required
                                         fullWidth
-                                        id="NickName"
+                                        id="nickName"
                                         label="닉네임"
                                         autoFocus
                                     />
