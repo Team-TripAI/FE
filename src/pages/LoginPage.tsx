@@ -26,9 +26,13 @@ const Wrapper = styled.div`
     width: 100vw;
 `;
 const OauthBox = styled.div`
-    margin-top: 20px;
+    width: 100%;
+    margin-top: 2em;
+    margin-bottom: 4em;
+    padding-top: 3em;
     display: flex;
     justify-content: center;
+    border-top: 2px solid #eaeaea;
 `;
 
 const theme = createTheme();
@@ -61,6 +65,8 @@ const LoginPage = () => {
         });
 
         const accessToken = response.headers['authorization'];
+
+        // console.log(accessToken);
 
         // 로그인 성공 시 로컬스토리지에 토큰 저장
         localStorage.setItem('accessToken', accessToken);
@@ -123,8 +129,22 @@ const LoginPage = () => {
                     <OauthBox>
                         <GoogleOAuthProvider clientId={CLIENT_ID}>
                             <GoogleLogin
+                                width="450px"
+                                type="standard" // 버튼 유형: 'standard' 또는 'icon'
+                                theme="outline" // 버튼 테마: 'outline', 'filled_blue', 또는 'filled_black'
+                                size="large" // 버튼 크기: 'large', 'medium', 또는 'small'
+                                text="continue_with" // 버튼 텍스트: 'signin_with', 'signup_with', 'continue_with', 또는 'signin'
+                                shape="pill" // 버튼 모양: 'rectangular', 'pill', 'circle', 또는 'square'
+                                logo_alignment="center" // Google 로고 정렬: 'left' 또는 'center'
+                                //
                                 onSuccess={(res) => {
                                     console.log(res);
+                                    const token = res.credential;
+                                    console.log(token);
+                                    const response = axiosInstance.post('/login/google', {
+                                        token: token,
+                                    });
+                                    console.log(response);
                                 }}
                                 // onFailure={(err) => {
                                 //     console.log(err);
@@ -143,7 +163,7 @@ const LoginPage = () => {
                             mt: 2,
                         }}
                     >
-                        <Button onClick={() => navigate('/signup')}>회원가입</Button>
+                        <Button onClick={() => navigate('/signup')}>회원가입하러 가기</Button>
                     </Grid>
                 </Container>
             </ThemeProvider>

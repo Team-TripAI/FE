@@ -11,7 +11,6 @@ const { persistAtom } = recoilPersist({
     storage: sessionStorage,
 });
 
-//임시 값들
 export const isLoggedIn = atom<isLoggedInType>({
     key: 'isLoggedIn',
     default: {

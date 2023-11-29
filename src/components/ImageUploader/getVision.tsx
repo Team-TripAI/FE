@@ -34,7 +34,8 @@ const getVision = async (image: string) => {
         const colors = response.data.responses[0].imagePropertiesAnnotation.dominantColors.colors;
         const hexColorList = colors
             .slice(0, 5)
-            .map((color: any) => rgbToHex(color.color.red, color.color.green, color.color.blue));
+            .map((color: any) => rgbToHex(color.color.red, color.color.green, color.color.blue))
+            .map((color: string) => color.substring(1)); // 첫 번째 문자(#) 제거;
 
         // 상위 5개 레이블 리스트 추출
         const labels = response.data.responses[0].labelAnnotations;

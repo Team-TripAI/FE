@@ -13,7 +13,9 @@ axiosInstance.interceptors.request.use((config: any) => {
     const accessToken = localStorage.getItem('accessToken'); // localStorage에서 accessToken 가져오기
 
     // 인증이 필요 없는 요청을 식별 (예: 로그인, 회원가입, 토큰 재발급)
-    const noAuthRequired = ['/login', '/signup', '/reissue'].some((path) => config.url?.includes(path));
+    const noAuthRequired = ['/login', '/login/google', '/signup/email', '/reissue'].some((path) =>
+        config.url?.includes(path)
+    );
 
     if (!noAuthRequired) {
         if (accessToken) {
