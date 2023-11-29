@@ -1,5 +1,5 @@
 import { atom } from 'recoil';
-import { recoilPersist } from 'recoil-persist';
+// import { recoilPersist } from 'recoil-persist';
 
 export interface imageInfoType {
     imageurl: string;
@@ -7,11 +7,11 @@ export interface imageInfoType {
     labelList: string[];
 }
 
-//세션스토리지에 저장
-const { persistAtom } = recoilPersist({
-    key: 'sessionStorage', //key 값
-    storage: sessionStorage,
-});
+// //세션스토리지에 저장
+// const { persistAtom } = recoilPersist({
+//     key: 'sessionStorage', //key 값
+//     storage: sessionStorage,
+// });
 
 export const imageInfo = atom<imageInfoType>({
     key: 'imageInfo',
@@ -20,5 +20,5 @@ export const imageInfo = atom<imageInfoType>({
         colorList: [],
         labelList: [],
     },
-    effects_UNSTABLE: [persistAtom],
+    // effects_UNSTABLE: [persistAtom],
 });
