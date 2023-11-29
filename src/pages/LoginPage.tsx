@@ -20,6 +20,7 @@ import { useRecoilState } from 'recoil';
 import { isLoggedIn } from '../constants/isLoggedIn';
 import axios from 'axios';
 import axiosInstance from '../apis/axiosInstance';
+import { useEffect } from 'react';
 
 const Wrapper = styled.div`
     width: 100vw;
@@ -39,6 +40,16 @@ const LoginPage = () => {
 
     // const clientId = 'clientID';
     const CLIENT_ID = import.meta.env.VITE_CLIENT_ID;
+
+    //로그인 페이지 들어왔을 때 로그아웃 로직
+    useEffect(() => {
+        //로컬스토리지에 토큰 지우기
+        localStorage.removeItem('accessToken');
+
+        setMyIsLoggedIn({
+            loginStatus: false,
+        });
+    }, []);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();

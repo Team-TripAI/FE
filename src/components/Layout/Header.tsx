@@ -30,7 +30,7 @@ const settingsWithLogin: Setting[] = [
     },
     {
         name: '로그아웃',
-        dest: '/main',
+        dest: '/login',
     },
 ];
 const settingsWithoutLogin: Setting[] = [
