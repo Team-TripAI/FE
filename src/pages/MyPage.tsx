@@ -10,6 +10,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import PasswordModal from '../components/PasswordModal';
+import axiosInstance from '../apis/axiosInstance';
 
 const Container = styled.div`
     display: flex;
@@ -43,7 +44,7 @@ const ModifyName = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 1rem;
+    gap: 1.3rem;
     & > div {
         display: flex;
         align-items: center;
@@ -150,9 +151,13 @@ const MyPage = () => {
     // };
 
     useEffect(() => {
-        //get api 호출
-        setInitialName('messi');
-        setName('messi');
+        (async () => {
+            // const response = await axiosInstance.get('/users');
+            // console.log(response.data);
+
+            setInitialName('messi');
+            setName('messi');
+        })();
     }, []);
 
     const [expanded, setExpanded] = useState<string | false>(false);
@@ -209,7 +214,7 @@ const MyPage = () => {
                                 수정
                             </Button>
                             <Button variant="outlined" color="error" onClick={handleWithdrawClick}>
-                                회원 탈퇴
+                                탈퇴
                             </Button>
                         </>
                     )}
