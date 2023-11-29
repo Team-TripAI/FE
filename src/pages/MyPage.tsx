@@ -10,6 +10,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import PasswordModal from '../components/PasswordModal';
+import axiosInstance from '../apis/axiosInstance';
 
 const Container = styled.div`
     display: flex;
@@ -43,7 +44,7 @@ const ModifyName = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 1rem;
+    gap: 1.3rem;
     & > div {
         display: flex;
         align-items: center;
@@ -91,20 +92,31 @@ enum Action {
 }
 
 const MyPage = () => {
-    const [name, setName] = useState<string>(''); //변경 이름
-    // const [modify, setModify] = useState<boolean>(false);
-    const [initialName, setInitialName] = useState<string>(''); //초기이름 받아오기
+    const [name, setName] = useState<string>(''); //띄워줄 이름
+    const [tmpName, setTmpName] = useState<string>(''); //받을 이름
     const [nameState, setNameState] = useState<boolean>(false); //완료 버튼
 
     const [currentAction, setCurrentAction] = useState<Action | null>(null);
 
     const [isPasswordModalOpen, setPasswordModalOpen] = useState(false);
 
-    const handlePasswordConfirm = (password: string) => {
+    const handlePasswordConfirm = async (password: string) => {
         if (currentAction === Action.Modify) {
-            console.log('수정 API 호출', password);
             // 수정 API 호출 로직
-            setNameState(false);
+            try {
+                const response = await axiosInstance.post('/users', {
+                    nickname: tmpName,
+                    pw: password,
+                });
+                console.log(response.data);
+                //성공시
+                setName(tmpName);
+            } catch (error) {
+                //실패시
+                setTmpName(name);
+            } finally {
+                setNameState(false);
+            }
         } else if (currentAction === Action.Withdraw) {
             console.log('탈퇴 API 호출', password);
             // 탈퇴 API 호출 로직
@@ -150,9 +162,14 @@ const MyPage = () => {
     // };
 
     useEffect(() => {
-        //get api 호출
-        setInitialName('messi');
-        setName('messi');
+        (async () => {
+            // const response = await axiosInstance.get('/users');
+            // console.log(response.data);
+
+            //초기화
+            setTmpName('messi');
+            setName('messi');
+        })();
     }, []);
 
     const [expanded, setExpanded] = useState<string | false>(false);
@@ -185,11 +202,11 @@ const MyPage = () => {
                     <div>
                         {nameState ? (
                             <TextField
-                                label={initialName}
+                                label={name}
                                 variant="outlined"
                                 fullWidth
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
+                                value={tmpName}
+                                onChange={(e) => setTmpName(e.target.value)}
                             />
                         ) : (
                             <NameField>
@@ -209,7 +226,7 @@ const MyPage = () => {
                                 수정
                             </Button>
                             <Button variant="outlined" color="error" onClick={handleWithdrawClick}>
-                                회원 탈퇴
+                                탈퇴
                             </Button>
                         </>
                     )}

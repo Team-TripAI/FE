@@ -19,6 +19,8 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { isLoggedIn } from '../constants/isLoggedIn';
 import axios from 'axios';
+import axiosInstance from '../apis/axiosInstance';
+import { useEffect } from 'react';
 
 const Wrapper = styled.div`
     width: 100vw;
@@ -39,25 +41,36 @@ const LoginPage = () => {
     // const clientId = 'clientID';
     const CLIENT_ID = import.meta.env.VITE_CLIENT_ID;
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    //로그인 페이지 들어왔을 때 로그아웃 로직
+    useEffect(() => {
+        //로컬스토리지에 토큰 지우기
+        localStorage.removeItem('accessToken');
+
+        setMyIsLoggedIn({
+            loginStatus: false,
+        });
+    }, []);
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log({
+
+        const response = await axiosInstance.post('/login', {
             email: data.get('email'),
-            password: data.get('password'),
+            pw: data.get('password'),
         });
 
-        //login
-
-        // const accessToken = response.data.accessToken;
+        const accessToken = response.headers['authorization'];
 
         // 로그인 성공 시 로컬스토리지에 토큰 저장
-        // localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('accessToken', accessToken);
 
         // 로그인여부 세션스토리지에 저장
-        // setMyIsLoggedIn({
-        //     loginStatus: true,
-        // });
+        setMyIsLoggedIn({
+            loginStatus: true,
+        });
+
+        navigate('/main');
     };
 
     return (
