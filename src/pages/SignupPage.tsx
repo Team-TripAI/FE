@@ -34,12 +34,18 @@ const SignupPage = () => {
             password: data.get('password'),
             nickname: data.get('nickname'),
         });
-        const response = await axiosInstance.post('/signup/email', {
-            email: data.get('email'),
-            pw: data.get('password'),
-            nickname: data.get('nickname'),
-        });
-        console.log(response);
+
+        try {
+            const response = await axiosInstance.post('/signup/email', {
+                email: data.get('email'),
+                pw: data.get('password'),
+                nickname: data.get('nickname'),
+            });
+            console.log(response);
+            navigate('/login');
+        } catch (error) {
+            alert('회원가입 실패');
+        }
     };
 
     return (

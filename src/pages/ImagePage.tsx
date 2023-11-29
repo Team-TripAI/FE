@@ -17,18 +17,88 @@ import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ImageUploader from '../components/ImageUploader/index.tsx';
 import styled from 'styled-components';
+import SendIcon from '@mui/icons-material/Send';
+import { useRecoilValue } from 'recoil';
+import { imageInfo } from '../constants/imageInfo.ts';
+import axiosInstance from '../apis/axiosInstance.ts';
+import { useState } from 'react';
 
 const Wrapper = styled.div`
     width: 100vw;
 `;
 
-//8개 보여주기
-const cards = [1, 2, 3, 4, 5, 6, 7, 8];
+//임시.. 로고로 바꾸기
+const Logo = styled.div`
+    width: 100%;
+    height: 5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+`;
+const Name = styled.div`
+    font-size: 1.2rem;
+    font-weight: bold;
+    height: 3rem;
+`;
+const Address = styled.div`
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    height: 3rem;
+`;
+const Score = styled.div`
+    font-size: 1rem;
+    height: 1.5rem;
+`;
+
+interface recommendListType {
+    address: string;
+    image: string;
+    lat: number;
+    lng: number;
+    name: string;
+    score: number;
+}
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 const ImagePage = () => {
+    const myImageInfo = useRecoilValue(imageInfo);
+
+    const [recommendList, setRecommendList] = useState<recommendListType[]>();
+
+    const handleSearch = async () => {
+        console.log('handleSearch');
+        console.log(myImageInfo);
+        try {
+            const response = await axiosInstance.post('/image', {
+                colorList: myImageInfo.colorList,
+                labelList: myImageInfo.labelList,
+            });
+
+            const tmp = response.data.data.recommendList.map(
+                (item: any): recommendListType => ({
+                    address: item.address,
+                    image: item.image,
+                    lat: item.lat,
+                    lng: item.lng,
+                    name: item.name,
+                    score: Math.floor(item.score),
+                })
+            );
+            setRecommendList(tmp);
+            console.log(recommendList);
+        } catch (error) {
+            //실패시
+            console.log(error);
+            alert('이미지 기반 추천에 실패했습니다.');
+        } finally {
+        }
+    };
+
     return (
         <Wrapper>
             <ThemeProvider theme={defaultTheme}>
@@ -51,9 +121,10 @@ const ImagePage = () => {
                         }}
                     >
                         <Container>
-                            <Typography component="h1" variant="h2" align="center" color="text.primary" gutterBottom>
+                            {/* <Typography component="h1" variant="h2" align="center" color="text.primary" gutterBottom>
                                 이미지 기반 추천
-                            </Typography>
+                            </Typography> */}
+                            <Logo>로고</Logo>
                             {/* <Typography variant="h5" align="center" color="text.secondary" paragraph>
                                 Something short and leading about the collection below—its contents, the creator, etc.
                                 Make it short and sweet, but not too short so folks don&apos;t simply skip over it
@@ -70,13 +141,29 @@ const ImagePage = () => {
                                 <ImageUploader />
                                 {/* <Button variant="contained">Main call to action</Button>
                                 <Button variant="outlined">Secondary action</Button> */}
-                                <Grid sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+                                <Grid
+                                    sx={{
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        width: '100%',
+                                    }}
+                                >
                                     <Typography variant="h5" align="center" color="text.primary" gutterBottom>
                                         이미지를 업로드하여
                                     </Typography>
                                     <Typography variant="h5" align="center" color="text.primary" gutterBottom>
                                         여행지를 추천받아보세요!
                                     </Typography>
+                                    <Button
+                                        variant="contained"
+                                        endIcon={<SendIcon />}
+                                        sx={{ marginTop: 5, width: '50%' }}
+                                        onClick={handleSearch}
+                                    >
+                                        업로드한 이미지로 추천받기
+                                    </Button>
                                 </Grid>
                             </Stack>
                         </Container>
@@ -84,8 +171,8 @@ const ImagePage = () => {
                     <Container sx={{ py: 8 }}>
                         {/* End hero unit */}
                         <Grid container spacing={10}>
-                            {cards.map((card) => (
-                                <Grid item key={card} xs={12} sm={6} md={3}>
+                            {recommendList?.map((item, idx) => (
+                                <Grid item key={idx} xs={12} sm={6} md={3}>
                                     <Card
                                         sx={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}
                                     >
@@ -95,13 +182,24 @@ const ImagePage = () => {
                                                 // 16:9
                                                 pt: '56.25%',
                                             }}
-                                            image="https://source.unsplash.com/random?wallpapers"
+                                            image={item.image}
                                         />
-                                        <CardContent sx={{ flexGrow: 1 }}>
-                                            <Typography gutterBottom variant="h5" component="h2">
-                                                지역명
+                                        <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+                                            <Name>{item.name}</Name>
+                                            <Address>{item.address}</Address>
+                                            <Score>Score : {item.score}</Score>
+                                            {/* <Typography
+                                                gutterBottom
+                                                variant="h6"
+                                                component="h2"
+                                                sx={{
+                                                    fontSize: '1.2rem',
+                                                }}
+                                            >
+                                                {item.name}
                                             </Typography>
-                                            <Typography>주소 ~~~ - ~~~ - ~~~</Typography>
+                                            <Typography>{item.address}</Typography>
+                                            <Typography>Score : {item.score}</Typography> */}
                                         </CardContent>
                                         {/* <CardActions>
                                             <Button size="small">View</Button>

@@ -11,6 +11,7 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import PasswordModal from '../components/PasswordModal';
 import axiosInstance from '../apis/axiosInstance';
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
     display: flex;
@@ -92,13 +93,25 @@ enum Action {
 }
 
 const MyPage = () => {
-    const [name, setName] = useState<string>(''); //띄워줄 이름
-    const [tmpName, setTmpName] = useState<string>(''); //받을 이름
+    const navigate = useNavigate();
+
+    const [name, setName] = useState<string>(); //띄워줄 이름
+    const [tmpName, setTmpName] = useState<string>(); //받을 이름
     const [nameState, setNameState] = useState<boolean>(false); //완료 버튼
 
     const [currentAction, setCurrentAction] = useState<Action | null>(null);
 
     const [isPasswordModalOpen, setPasswordModalOpen] = useState(false);
+
+    useEffect(() => {
+        (async () => {
+            const response = await axiosInstance.get('/users');
+
+            //초기화
+            setTmpName(response.data.data.nickname);
+            setName(response.data.data.nickname);
+        })();
+    }, []);
 
     const handlePasswordConfirm = async (password: string) => {
         if (currentAction === Action.Modify) {
@@ -120,6 +133,19 @@ const MyPage = () => {
         } else if (currentAction === Action.Withdraw) {
             console.log('탈퇴 API 호출', password);
             // 탈퇴 API 호출 로직
+            try {
+                const response = await axiosInstance.delete('/users', {
+                    data: {
+                        pw: password,
+                    },
+                });
+                console.log(response);
+                navigate('/login');
+            } catch (error) {
+                //실패시
+                alert('잘못된 비밀번호입니다.');
+            } finally {
+            }
         }
     };
 
@@ -135,6 +161,11 @@ const MyPage = () => {
         // setCurrentAction(Action.Modify);
         // setPasswordModalOpen(true);
     };
+    // 수정 취소
+    const handleModifyCancel = () => {
+        setTmpName(name);
+        setNameState(false);
+    };
 
     // 탈퇴 버튼 클릭 시
     const handleWithdrawClick = () => {
@@ -142,50 +173,11 @@ const MyPage = () => {
         setPasswordModalOpen(true);
     };
 
-    // const modifyName = () => {
-    //     setNameState(!nameState);
-
-    //     if (modify) {
-    //         console.log(name);
-    //         //put api 호출
-
-    //         setInitialName(name);
-    //         setModify(false);
-    //     } else {
-    //         setModify(true);
-    //     }
-    // };
-
-    // const modifyName = () => {
-    //     setNameState(!nameState);
-    //     setModify(true);
-    // };
-
-    useEffect(() => {
-        (async () => {
-            // const response = await axiosInstance.get('/users');
-            // console.log(response.data);
-
-            //초기화
-            setTmpName('messi');
-            setName('messi');
-        })();
-    }, []);
-
     const [expanded, setExpanded] = useState<string | false>(false);
 
     const handleChange = (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
         setExpanded(isExpanded ? panel : false);
     };
-
-    // const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //     setPassword(e.target.value);
-    // };
-
-    // //회원탈퇴
-    // const withdraw = () => {
-    //     //delete api 호출
-    // };
 
     return (
         <Container>
@@ -217,9 +209,14 @@ const MyPage = () => {
                     </div>
 
                     {nameState ? (
-                        <NameModButton variant="contained" color="success" onClick={handleModifyComplete}>
-                            완료
-                        </NameModButton>
+                        <>
+                            <NameModButton variant="outlined" color="success" onClick={handleModifyComplete}>
+                                완료
+                            </NameModButton>
+                            <NameModButton variant="outlined" color="error" onClick={handleModifyCancel}>
+                                취소
+                            </NameModButton>
+                        </>
                     ) : (
                         <>
                             <Button variant="outlined" color="secondary" onClick={handleModifyComplete}>

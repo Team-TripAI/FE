@@ -5,6 +5,9 @@ import uploadimg from '../../imgs/uploadimg.png';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import getVision from './getVision';
 import base64encoding from './base64encoding';
+import { useRecoilState } from 'recoil';
+import { imageInfo } from '../../constants/imageInfo';
+import { set } from 'react-hook-form';
 
 const Container = styled.div`
     display: flex;
@@ -36,6 +39,8 @@ const Button = styled.button`
 `;
 
 const ImageUploader = () => {
+    const [myImageInfo, setMyImageInfo] = useRecoilState(imageInfo); //전역변수
+
     const [imageFile, setImageFile]: any = useState(null);
     const [imageSrc, setImageSrc]: any = useState(null);
     const inputRef: any = useRef([]);
@@ -61,7 +66,15 @@ const ImageUploader = () => {
     useEffect(() => {
         if (base64Image) {
             getVision(base64Image)
-                .then((data) => console.log('returned data:', data))
+                .then((data) => {
+                    console.log('returned data:', data);
+                    //결과 전역변수에 저장
+                    setMyImageInfo((prev) => ({
+                        ...prev,
+                        colorList: data.hexColorList,
+                        labelList: data.labelList,
+                    }));
+                })
                 .catch((error) => console.error(error));
         }
     }, [base64Image]);
@@ -116,6 +129,10 @@ const ImageUploader = () => {
             const data = await upload.promise();
             console.log(data);
             setUrl(data.Location);
+            setMyImageInfo((prev) => ({
+                ...prev,
+                imageUrl: data.Location,
+            }));
         } catch (error) {
             console.log(error);
         }

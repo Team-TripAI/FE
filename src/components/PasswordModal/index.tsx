@@ -60,7 +60,7 @@ const PasswordModal: React.FC<PasswordModalProps> = ({ isOpen, onClose, onConfir
     return (
         <Modal open={isOpen} onClose={onClose}>
             <Container>
-                <h3>! 본인 확인을 위해 비밀번호를 입력해주세요.</h3>
+                <h3> 본인 확인을 위해 비밀번호를 입력해주세요.</h3>
                 <div>
                     <TextField
                         type="password"

@@ -1,8 +1,10 @@
 import { atom } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
 
-export interface isLoggedInType {
-    loginStatus: boolean;
+export interface imageInfoType {
+    imageurl: string;
+    colorList: string[];
+    labelList: string[];
 }
 
 //세션스토리지에 저장
@@ -11,10 +13,12 @@ const { persistAtom } = recoilPersist({
     storage: sessionStorage,
 });
 
-export const isLoggedIn = atom<isLoggedInType>({
-    key: 'isLoggedIn',
+export const imageInfo = atom<imageInfoType>({
+    key: 'imageInfo',
     default: {
-        loginStatus: false,
+        imageurl: '',
+        colorList: [],
+        labelList: [],
     },
     effects_UNSTABLE: [persistAtom],
 });
