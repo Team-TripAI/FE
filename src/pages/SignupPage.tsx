@@ -42,6 +42,7 @@ const SignupPage = () => {
                 nickname: data.get('nickname'),
             });
             console.log(response);
+            alert('회원가입 성공');
             navigate('/login');
         } catch (error) {
             alert('회원가입 실패');

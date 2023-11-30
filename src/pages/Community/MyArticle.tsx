@@ -38,7 +38,7 @@ const PostButton = styled(Button)({
     },
 });
 
-export default function Community() {
+const myArticle = () => {
     const navigate = useNavigate();
     const [articleList, setArticleList] = useState<ArticleInterface>([]);
     const [pageNumber, setPageNumber] = useState<number>(1);
@@ -50,7 +50,7 @@ export default function Community() {
     useEffect(() => {
         const getArticles = async () => {
             try {
-                const response = await axiosInstance.get(`/articles`, {
+                const response = await axiosInstance.get(`/users/articles`, {
                     params: {
                         pageNumber: pageNumber - 1,
                         pageSize: 8,
@@ -71,11 +71,11 @@ export default function Community() {
             <Container sx={{ height: '100vh', mt: 13 }}>
                 <Box>
                     <Typography gutterBottom variant="h4" component="h2" textAlign="center" fontFamily="">
-                        경험을 공유하세요!
+                        내가 작성한 게시글
                     </Typography>
                 </Box>
                 <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 3 }}>
-                    <PostButton onClick={() => navigate('/community/post')}>경험 공유하기</PostButton>
+                    {/* <PostButton onClick={() => navigate('/community/post')}>경험 공유하기</PostButton> */}
                 </Box>
                 <Grid container spacing={10}>
                     {articleList.map((article: ArticleInterface) => (
@@ -113,4 +113,6 @@ export default function Community() {
             </div>
         </Wrapper>
     );
-}
+};
+
+export default myArticle;

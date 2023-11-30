@@ -1,7 +1,7 @@
 import axios, { AxiosResponse, AxiosError } from 'axios';
 
 const axiosInstance = axios.create({
-    baseURL: 'http://43.202.10.17:8080',
+    baseURL: 'https://tripai.site',
     headers: {
         'Content-Type': 'application/json',
     },
