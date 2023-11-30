@@ -59,24 +59,29 @@ const LoginPage = () => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
 
-        const response = await axiosInstance.post('/login', {
-            email: data.get('email'),
-            pw: data.get('password'),
-        });
+        try {
+            const response = await axiosInstance.post('/login', {
+                email: data.get('email'),
+                pw: data.get('password'),
+            });
 
-        const accessToken = response.headers['authorization'];
+            const accessToken = response.headers['authorization'];
 
-        // console.log(accessToken);
+            // console.log(accessToken);
 
-        // 로그인 성공 시 로컬스토리지에 토큰 저장
-        localStorage.setItem('accessToken', accessToken);
+            // 로그인 성공 시 로컬스토리지에 토큰 저장
+            localStorage.setItem('accessToken', accessToken);
 
-        // 로그인여부 세션스토리지에 저장
-        setMyIsLoggedIn({
-            loginStatus: true,
-        });
+            // 로그인여부 세션스토리지에 저장
+            setMyIsLoggedIn({
+                loginStatus: true,
+            });
 
-        navigate('/main');
+            navigate('/main');
+        } catch (err) {
+            console.log(err);
+            alert('아이디 혹은 비밀번호를 잘못 입력하셨습니다.');
+        }
     };
 
     return (

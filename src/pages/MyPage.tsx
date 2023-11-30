@@ -103,6 +103,21 @@ const MyPage = () => {
 
     const [isPasswordModalOpen, setPasswordModalOpen] = useState(false);
 
+    //유저 일정 가져오기
+    useEffect(() => {
+        (async () => {
+            const response = await axiosInstance.get('/users/plan', {
+                params: {
+                    pageNum: 0,
+                    pageSize: 5,
+                },
+            });
+
+            console.log(response);
+        })();
+    }, []);
+
+    // 유저 닉네임 가져오기
     useEffect(() => {
         (async () => {
             const response = await axiosInstance.get('/users');
@@ -188,7 +203,7 @@ const MyPage = () => {
             />
             <Header>
                 {/* 커뮤니티 페이지로 리다이렉션 유저 정보 props */}
-                <button>내가 작성한 글 보러가기</button>
+                <button onClick={() => navigate('/myArticle')}>내가 작성한 글 보러가기</button>
 
                 <ModifyName>
                     <div>
