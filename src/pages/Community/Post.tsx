@@ -7,13 +7,20 @@ import { StandaloneSearchBox, useJsApiLoader } from "@react-google-maps/api";
 import { useRef } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../apis/axiosInstance.ts";
+import { imageInfo } from "../../constants/imageInfo.ts";
+import { useRecoilValue } from "recoil";
 
 interface FormValues {
-  title: string;
+  colorList: string[];
   content: string;
-  place: string;
+  formattedAddress: string;
+  image: string;
+  labelList: string[];
   lat: number;
   lng: number;
+  locationName: string;
+  title: string;
 }
 
 const Wrapper = styled.div`
@@ -83,23 +90,49 @@ const ContentTextarea = styled.textarea`
   }
 `;
 
-export function PostForm() {
+export default function Post() {
   const { register, handleSubmit } = useForm<FormValues>();
   const inputRef = useRef();
   const [lat, setLat] = useState<number>(0);
   const [lng, setLng] = useState<number>(0);
+  const [locationName, setLocationName] = useState<string>("");
+  const [formattedAddress, setFormattedAddress] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
+  const [content, setContent] = useState<string>("");
+  const imageData = useRecoilValue(imageInfo);
+
   const navigate = useNavigate();
 
-  const onValid = (data: FormValues) => {
-    data.lng = lng;
-    data.lat = lat;
-    console.log(data);
-
-    navigate("/mypage");
+  const onClick = async () => {
+    try {
+      const finalFormData: FormValues = {
+        title,
+        content,
+        lat,
+        lng,
+        formattedAddress,
+        locationName,
+        colorList: imageData.colorList,
+        labelList: imageData.labelList,
+        image: imageData.imageUrl,
+      };
+      console.log(finalFormData);
+      const response = await axiosInstance.post("/articles", {
+        ...finalFormData,
+      });
+      console.log(response);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
-  const onInvalid = (data: FormValues) => {
-    console.log(data);
+  const handleVisionData = (data) => {
+    setColorList(data.colorList);
+    setLabelList(data.labelList);
+  };
+
+  const handleImageData = (data) => {
+    setImage(data);
   };
 
   const { isLoaded, loadError } = useJsApiLoader({
@@ -107,15 +140,29 @@ export function PostForm() {
     libraries: ["places"],
   });
 
+  const onValid = (data: any) => {
+    setContent(data.content);
+    setTitle(data.title);
+  };
+
   const handlePlaceChanged = () => {
+    // name, lat, lng, formatted_address,
     const [place] = inputRef.current.getPlaces();
     setLat(place.geometry.location.lat());
     setLng(place.geometry.location.lng());
+    setFormattedAddress(place.formatted_address);
+    setLocationName(place.name);
   };
 
   return (
-    <PostDiv>
-      <form onSubmit={handleSubmit(onValid, onInvalid)}>
+    <Wrapper>
+      <ImageDiv>
+        <ImageUploader
+          handleVisionData={handleVisionData}
+          handleImageData={handleImageData}
+        />
+      </ImageDiv>
+      <PostDiv>
         <Box sx={{ width: "100%", mx: 2 }}>
           <Typography>장소</Typography>
           {isLoaded && (
@@ -128,45 +175,35 @@ export function PostForm() {
                   type="text"
                   className="form-control"
                   placeholder="놀러간 장소를 입력해주세요"
-                  {...register("place")}
                 />
               </StandaloneSearchBox>
-              <Typography>제목</Typography>
-              <TitleInput
-                {...register("title", {
-                  required: "제목을 써주세요.",
-                })}
-              />
+              <form onSubmit={handleSubmit(onValid)}>
+                <Box sx={{ width: "100%" }}>
+                  <Typography>제목</Typography>
+                  <TitleInput
+                    {...register("title", {
+                      required: "제목을 써주세요.",
+                    })}
+                  />
+                  <Typography>내용</Typography>
+                  <ContentTextarea
+                    {...register("content", {
+                      required: "내용을 써주세요.",
+                      minLength: {
+                        value: 10,
+                        message: "내용이 너무 짧습니다.",
+                      },
+                    })}
+                  />
+                </Box>
+                <Box sx={{ display: "flex", justifyContent: "flex-end", m: 2 }}>
+                  <PostButton onClick={onClick}>save</PostButton>
+                </Box>
+              </form>
             </>
           )}
         </Box>
-        <Box sx={{ width: "100%", m: 2 }}>
-          <Typography>내용</Typography>
-          <ContentTextarea
-            {...register("content", {
-              required: "내용을 써주세요.",
-              minLength: {
-                value: 10,
-                message: "내용이 너무 짧습니다.",
-              },
-            })}
-          />
-        </Box>
-        <Box sx={{ display: "flex", justifyContent: "flex-end", m: 2 }}>
-          <PostButton>save</PostButton>
-        </Box>
-      </form>
-    </PostDiv>
-  );
-}
-
-export default function Post() {
-  return (
-    <Wrapper>
-      <ImageDiv>
-        <ImageUploader />
-      </ImageDiv>
-      <PostForm></PostForm>
+      </PostDiv>
     </Wrapper>
   );
 }
