@@ -8,6 +8,17 @@ import Container from "@mui/material/Container";
 import styled from "styled-components";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../apis/axiosInstance";
+import { useState, useEffect } from "react";
+import Pagination from "@mui/material/Pagination";
+
+interface ArticleInterface {
+  articleId: string;
+  title: string;
+  locationName: string;
+  formattedAddress: string;
+  image: string;
+}
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -27,35 +38,33 @@ const PostButton = styled(Button)({
   },
 });
 
-const cards = [
-  {
-    id: 0,
-    location: "ji-house",
-    address: "sangdoro 47ma 14",
-    contents: "card number 0",
-  },
-  {
-    id: 1,
-    location: "Tokyo",
-    address: "Japan somewhere",
-    contents: "card number 1",
-  },
-  {
-    id: 2,
-    location: "mt.Hanlla",
-    address: "Jeju-Island",
-    contents: "card number 2",
-  },
-  {
-    id: 3,
-    location: "su-house",
-    address: "Gyeonggido Gwangju",
-    contents: "card number 3",
-  },
-];
-
 export default function Community() {
   const navigate = useNavigate();
+  const [articleList, setArticleList] = useState<ArticleInterface>([]);
+  const [pageNumber, setPageNumber] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(1);
+  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPageNumber(value);
+  };
+
+  useEffect(() => {
+    const getArticles = async () => {
+      try {
+        const response = await axiosInstance.get(`/articles`, {
+          params: {
+            pageNumber: pageNumber - 1,
+            pageSize: 8,
+          },
+        });
+        setArticleList(response.data.data.articleList);
+        setTotalPages(response.data.data.totalPages);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    getArticles();
+  }, [pageNumber]);
 
   return (
     <Wrapper>
@@ -77,8 +86,8 @@ export default function Community() {
           </PostButton>
         </Box>
         <Grid container spacing={10}>
-          {cards.map((card) => (
-            <Grid item key={card.id} xs={12} sm={6} md={3}>
+          {articleList.map((article: ArticleInterface) => (
+            <Grid item key={article.articleId} xs={12} sm={6} md={3}>
               <Card
                 sx={{
                   width: "100%",
@@ -86,7 +95,7 @@ export default function Community() {
                   display: "flex",
                   flexDirection: "column",
                 }}
-                onClick={() => navigate(`/community/${card.id}`)}
+                onClick={() => navigate(`/community/${article.articleId}`)}
               >
                 <CardMedia
                   component="div"
@@ -97,16 +106,25 @@ export default function Community() {
                   image="https://source.unsplash.com/random?wallpapers"
                 />
                 <CardContent sx={{ flexGrow: 1 }}>
-                  <Typography gutterBottom fontFamily="mono-space">
-                    {card.location}
+                  <Typography gutterBottom fontSize="15px">
+                    {article.title}
                   </Typography>
-                  <Typography>{card.address}</Typography>
+                  <Typography fontFamily="mono-space">
+                    {article.locationName}
+                  </Typography>
                 </CardContent>
               </Card>
             </Grid>
           ))}
         </Grid>
       </Container>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <Pagination
+          count={totalPages}
+          page={pageNumber}
+          onChange={handleChange}
+        />
+      </div>
     </Wrapper>
   );
 }
