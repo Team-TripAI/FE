@@ -91,10 +91,16 @@ const ImagePage = () => {
             );
             setRecommendList(tmp);
             console.log(recommendList);
-        } catch (error) {
+        } catch (error: any) {
             //실패시
             console.log(error);
-            alert('이미지 기반 추천에 실패했습니다.');
+            if (error.response?.data?.code === 404) {
+                alert('유사한 이미지가 없습니다.');
+            } else if (error.response?.data?.code === 400) {
+                alert('유효하지 않은 색상값입니다.');
+            } else {
+                alert('이미지 기반 추천에 실패했습니다.');
+            }
         } finally {
         }
     };

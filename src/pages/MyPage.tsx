@@ -106,10 +106,10 @@ const MyPage = () => {
     //유저 일정 가져오기
     useEffect(() => {
         (async () => {
-            const response = await axiosInstance.get('/users/plan', {
+            const response = await axiosInstance.get('/plan/budget/users/plan', {
                 params: {
-                    pageNum: 0,
-                    pageSize: 5,
+                    pageNumber: 0,
+                    pageSize: 10,
                 },
             });
 
