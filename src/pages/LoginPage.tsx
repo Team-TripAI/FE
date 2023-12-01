@@ -143,13 +143,21 @@ const LoginPage = () => {
                                 logo_alignment="center" // Google 로고 정렬: 'left' 또는 'center'
                                 //
                                 onSuccess={(res) => {
-                                    console.log(res);
                                     const token = res.credential;
-                                    console.log(token);
-                                    const response = axiosInstance.post('/login/google', {
-                                        token: token,
-                                    });
-                                    console.log(response);
+                                    (async () => {
+                                        const response = await axiosInstance.post('/login/google', {
+                                            token: token,
+                                        });
+
+                                        //토큰 로컬스토리지에 저장
+                                        localStorage.setItem('accessToken', response.headers['authorization']);
+
+                                        // 로그인여부 세션스토리지에 저장
+                                        setMyIsLoggedIn({
+                                            loginStatus: true,
+                                        });
+                                        navigate('/main');
+                                    })();
                                 }}
                                 // onFailure={(err) => {
                                 //     console.log(err);
