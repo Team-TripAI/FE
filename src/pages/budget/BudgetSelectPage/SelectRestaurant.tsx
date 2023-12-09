@@ -54,6 +54,10 @@ export default function SelectRestaurant({
   nextPage,
   prevPage,
   getRestaurantList,
+}: {
+  prevPage: any;
+  nextPage: any;
+  getRestaurantList: any;
 }) {
   const [checked, setChecked] = React.useState<Restaurant[]>([]);
   const [left, setLeft] = React.useState<Restaurant[]>([]);
@@ -132,9 +136,6 @@ export default function SelectRestaurant({
     prevPage(2);
   };
 
-  const numberOfChecked = (items: readonly Restaurant[]) =>
-    intersection(checked, items).length;
-
   const handleCheckedRight = () => {
     setRight(right.concat(leftChecked));
     setLeft(not(left, leftChecked));
@@ -185,7 +186,7 @@ export default function SelectRestaurant({
     </Card>
   );
   async function initMap() {
-    const { Map } = await google.maps.importLibrary("maps");
+    const { Map } = google.maps;
 
     const map = new Map(document.getElementById("map") as HTMLElement, {
       center: { lat: right[0].lat, lng: right[0].lng },

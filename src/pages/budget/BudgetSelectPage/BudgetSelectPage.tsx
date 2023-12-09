@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import Button from "@mui/material/Button";
 import { useState } from "react";
 import SelectAccommodation from "./SelectAccommodation";
 import SelectFlight from "./SelectFlight";
@@ -41,7 +40,6 @@ export default function BudgetSelectPage() {
   const [accommodationList, setAccommodationList] = useState<any[]>([]);
   const [restaurantList, setRestaurantList] = useState<any[]>([]);
   const [attractionList, setAttractionList] = useState<any[]>([]);
-  const [submitForm, setSubmitForm] = useState({});
   const [lastPageCalled, setLastPageCalled] = useState(false);
   const navigate = useNavigate();
   const formData = useRecoilValue(submitFormat);

@@ -35,7 +35,13 @@ const Container = styled.div`
   display: flex;
 `;
 
-export default function SelectFlight({ nextPage, getFlightList }) {
+export default function SelectFlight({
+  nextPage,
+  getFlightList,
+}: {
+  nextPage: any;
+  getFlightList: any;
+}) {
   const [leftChecked, setLeftChecked] = useState<Flight | null>(null);
   const [rightChecked, setRightChecked] = useState<Flight | null>(null);
   const [left, setLeft] = useState<readonly Flight[]>([]);

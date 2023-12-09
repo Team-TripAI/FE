@@ -40,7 +40,7 @@ const PostButton = styled(Button)({
 
 export default function Community() {
   const navigate = useNavigate();
-  const [articleList, setArticleList] = useState<ArticleInterface>([]);
+  const [articleList, setArticleList] = useState<ArticleInterface[]>([]);
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {

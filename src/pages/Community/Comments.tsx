@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Typography, TextField, Button, Divider } from "@mui/material";
+import { Typography, TextField, Button, Box } from "@mui/material";
 import axiosInstance from "../../apis/axiosInstance";
-import { Box } from "@mui/material";
 
 interface Comment {
   commentId: number;
@@ -14,13 +13,13 @@ interface Comment {
 }
 
 interface CommentsProps {
-  articleId: number;
+  articleId: string | undefined;
   comments: Comment[];
 }
 
 interface CommentSubmitForm {
-  articleId: number;
-  commentId?: number;
+  articleId: string | undefined;
+  commentId?: number | null;
   content: string;
 }
 
@@ -59,9 +58,6 @@ const Comments: React.FC<CommentsProps> = ({ articleId, comments }) => {
   const [newSecondComment, setNewSecondComment] = useState<string>("");
   const [replyTo, setReplyTo] = useState<number | null>(null);
   const [openComment, setOpenComment] = useState<number | null>(null);
-  const [editSecondCommentId, setEditSecondCommentId] = useState<number | null>(
-    null
-  );
 
   const postComment = async (commentForm: CommentSubmitForm) => {
     if (commentForm.content.trim() === "") {
@@ -73,6 +69,7 @@ const Comments: React.FC<CommentsProps> = ({ articleId, comments }) => {
         ...commentForm,
       });
       alert("댓글 작성 완료!");
+      console.log(response);
       // 댓글 작성 후에는 새로고침을 통해 최신 댓글 목록을 불러올 수 있습니다.
       window.location.reload();
     } catch (err) {
@@ -86,6 +83,7 @@ const Comments: React.FC<CommentsProps> = ({ articleId, comments }) => {
         ...commentForm,
       });
       alert("대댓글 작성 완료!");
+      console.log(response);
       window.location.reload();
     } catch (err) {
       console.log(err);
@@ -96,6 +94,7 @@ const Comments: React.FC<CommentsProps> = ({ articleId, comments }) => {
     try {
       const response = await axiosInstance.delete(`/comments/${commentId}`);
       alert("댓글 삭제 완료!");
+      console.log(response);
       window.location.reload();
     } catch (err) {
       console.log(err);
@@ -143,7 +142,7 @@ const Comments: React.FC<CommentsProps> = ({ articleId, comments }) => {
           작성
         </Button>
       </Box>
-      {comments?.length > 0 ? (
+      {(comments?.length ?? 0) > 0 ? (
         comments.map((comment) => (
           <div key={comment.commentId}>
             {comment.isParent ? (

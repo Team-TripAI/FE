@@ -1,10 +1,11 @@
-import { atom } from 'recoil';
+import { atom } from "recoil";
 // import { recoilPersist } from 'recoil-persist';
 
 export interface imageInfoType {
-    imageurl: string;
-    colorList: string[];
-    labelList: string[];
+  imageurl: string;
+  colorList: string[];
+  labelList: string[];
+  imageUrl: string;
 }
 
 // //세션스토리지에 저장
@@ -14,11 +15,12 @@ export interface imageInfoType {
 // });
 
 export const imageInfo = atom<imageInfoType>({
-    key: 'imageInfo',
-    default: {
-        imageurl: '',
-        colorList: [],
-        labelList: [],
-    },
-    // effects_UNSTABLE: [persistAtom],
+  key: "imageInfo",
+  default: {
+    imageurl: "",
+    colorList: [],
+    labelList: [],
+    imageUrl: "",
+  },
+  // effects_UNSTABLE: [persistAtom],
 });
