@@ -128,9 +128,19 @@ export default function SelectAccommodation({
   const handleNextPage = () => {
     if (right.length > 0) {
       nextPage(1);
-      const selectedAccommodation = [];
-      if (right) selectedAccommodation.push(right);
-      getAccommodationList(selectedAccommodation);
+      const formattedAccommodations = right.map((hotel) => {
+        return {
+          name: hotel.name,
+          lat: hotel.lat,
+          lng: hotel.lng,
+          startDate: hotel.startDate,
+          endDate: hotel.endDate,
+          price: hotel.price,
+          avgPrice: hotel.avgPrice,
+          image: hotel.image,
+        };
+      });
+      getAccommodationList(formattedAccommodations);
     } else {
       setAlert(true);
     }

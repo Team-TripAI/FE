@@ -70,8 +70,8 @@ export default function BudgetInputFormat({ item }) {
   const [amount, setAmount] = useState<number>(0);
   const [percent, setPercent] = useState<number[]>([25, 50, 75]);
   const [maxValue, setMaxValue] = useState<number[]>([0, 0, 0, 0]);
-  const [firstDate, setFirstDate] = useState<string | null>(null);
-  const [secondDate, setSecondDate] = useState<string | null>(null);
+  const [firstDate, setFirstDate] = useState<string | null>("");
+  const [secondDate, setSecondDate] = useState<string | null>("");
   const [open, setOpen] = useState(false);
   const [error, setError] = useState(false);
   const navigate = useNavigate();
@@ -83,8 +83,8 @@ export default function BudgetInputFormat({ item }) {
   const handleClose = () => {
     setPercent([25, 50, 75]);
     setOpen(false);
-    setFirstDate(null);
-    setSecondDate(null);
+    setFirstDate("");
+    setSecondDate("");
     setAmount(0);
   };
 
