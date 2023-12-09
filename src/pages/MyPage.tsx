@@ -189,463 +189,463 @@ const MyPage = () => {
     const [pageNumber, setPageNumber] = useState<number>(1);
     const [totalPages, setTotalPages] = useState<number>(1);
     const [planList, setPlanList] = useState<any[]>([]); //유저 일정 리스트
-    const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
         setPageNumber(value);
     };
 
     //임시
-    const tmp = [
-        {
-            accommodation: 30,
-            accommodationList: [
-                {
-                    endDate: '2023-12-31',
-                    image: 'https://cf.bstatic.com/xdata/images/hotel/square60/497650805.jpg?k=8a38c4d87eff3bf19478446616bf2349af721648120d685b67097d958b62ae01&o=',
-                    lat: 35.7176401814438,
-                    lng: 139.785188392868,
-                    name: '오사카',
-                    startDate: '2023-12-25',
-                },
-                {
-                    endDate: '2023-12-31',
-                    image: 'https://cf.bstatic.com/xdata/images/hotel/square60/497650805.jpg?k=8a38c4d87eff3bf19478446616bf2349af721648120d685b67097d958b62ae01&o=',
-                    lat: 35.7176401814438,
-                    lng: 139.785188392868,
-                    name: '오사카',
-                    startDate: '2023-12-25',
-                },
-            ],
-            attraction: 10,
-            attractionList: [
-                {
-                    hours: [
-                        {
-                            day: 'SUN',
-                            open: '12:00',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'MON',
-                            open: '16:30',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'TUE',
-                            open: '16:30',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'WED',
-                            open: '16:30',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'THU',
-                            open: '16:30',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'FRI',
-                            open: '16:30',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'SAT',
-                            open: '12:00',
-                            close: '23:45',
-                        },
-                    ],
-                    image: 'https://media-cdn.tripadvisor.com/media/photo-l/1b/62/93/a0/caption.jpg',
-                    lat: 35.7176401814438,
-                    lng: 139.785188392868,
-                    name: '오사카',
-                },
-                {
-                    hours: [
-                        {
-                            day: 'SUN',
-                            open: '12:0',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'MON',
-                            open: '16:30',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'TUE',
-                            open: '16:30',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'WED',
-                            open: '16:30',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'THU',
-                            open: '16:30',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'FRI',
-                            open: '16:30',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'SAT',
-                            open: '12:0',
-                            close: '23:45',
-                        },
-                    ],
-                    image: 'https://media-cdn.tripadvisor.com/media/photo-l/1b/62/93/a0/caption.jpg',
-                    lat: 35.7176401814438,
-                    lng: 139.785188392868,
-                    name: '오사카',
-                },
-            ],
-            end: '2023-12-31',
-            flight: 30,
-            flightList: [
-                {
-                    airline: 'YP',
-                    arrivalAirport: 'LAX',
-                    departureAirport: 'ICN',
-                    endTime: '2023-12-31T07:30',
-                    name: 'YP101',
-                    startTime: '2023-12-25T13:30',
-                    url: 'https://www.tripadvisor.com/CheapFlightsPartnerHandoff?searchHash=3a43bb45deca656b05417e46cead30e9&provider=SkyScanner|1|36&area=FLTCenterColumn|0|1|ItinList|2|Meta_ItineraryPrice&resultsServlet=CheapFlightsSearchResults&handoffPlatform=desktop&impressionId=&totalPricePerPassenger=873900.06',
-                },
-                {
-                    airline: 'YP',
-                    arrivalAirport: 'LAX',
-                    departureAirport: 'ICN',
-                    endTime: '2023-12-31T07:30',
-                    name: 'YP101',
-                    startTime: '2023-12-25T13:30',
-                    url: 'https://www.tripadvisor.com/CheapFlightsPartnerHandoff?searchHash=3a43bb45deca656b05417e46cead30e9&provider=SkyScanner|1|36&area=FLTCenterColumn|0|1|ItinList|2|Meta_ItineraryPrice&resultsServlet=CheapFlightsSearchResults&handoffPlatform=desktop&impressionId=&totalPricePerPassenger=873900.06',
-                },
-            ],
-            name: '도쿄',
-            planId: 1,
-            restaurant: 30,
-            restaurantList: [
-                {
-                    hours: [
-                        {
-                            day: 'SUN',
-                            open: '12:0',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'MON',
-                            open: '16:30',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'TUE',
-                            open: '16:30',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'WED',
-                            open: '16:30',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'THU',
-                            open: '16:30',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'FRI',
-                            open: '16:30',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'SAT',
-                            open: '12:0',
-                            close: '23:45',
-                        },
-                    ],
-                    image: 'https://media-cdn.tripadvisor.com/media/photo-l/18/cc/b9/54/japanese-and-taiwan-fusion.jpg',
-                    lat: 35.7176401814438,
-                    lng: 139.785188392868,
-                    name: '오사카',
-                },
-                {
-                    hours: [
-                        {
-                            day: 'SUN',
-                            open: '12:0',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'MON',
-                            open: '16:30',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'TUE',
-                            open: '16:30',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'WED',
-                            open: '16:30',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'THU',
-                            open: '16:30',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'FRI',
-                            open: '16:30',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'SAT',
-                            open: '12:0',
-                            close: '23:45',
-                        },
-                    ],
-                    image: 'https://media-cdn.tripadvisor.com/media/photo-l/18/cc/b9/54/japanese-and-taiwan-fusion.jpg',
-                    lat: 35.7176401814438,
-                    lng: 139.785188392868,
-                    name: '오사카',
-                },
-            ],
-            start: '2023-12-25',
-            total: 100,
-        },
-        {
-            accommodation: 30,
-            accommodationList: [
-                {
-                    endDate: '2023-12-31',
-                    image: 'https://cf.bstatic.com/xdata/images/hotel/square60/497650805.jpg?k=8a38c4d87eff3bf19478446616bf2349af721648120d685b67097d958b62ae01&o=',
-                    lat: 35.7176401814438,
-                    lng: 139.785188392868,
-                    name: '오사카',
-                    startDate: '2023-12-25',
-                },
-                {
-                    endDate: '2023-12-31',
-                    image: 'https://cf.bstatic.com/xdata/images/hotel/square60/497650805.jpg?k=8a38c4d87eff3bf19478446616bf2349af721648120d685b67097d958b62ae01&o=',
-                    lat: 35.7176401814438,
-                    lng: 139.785188392868,
-                    name: '오사카',
-                    startDate: '2023-12-25',
-                },
-            ],
-            attraction: 10,
-            attractionList: [
-                {
-                    hours: [
-                        {
-                            day: 'SUN',
-                            open: '12:0',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'MON',
-                            open: '16:30',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'TUE',
-                            open: '16:30',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'WED',
-                            open: '16:30',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'THU',
-                            open: '16:30',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'FRI',
-                            open: '16:30',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'SAT',
-                            open: '12:0',
-                            close: '23:45',
-                        },
-                    ],
-                    image: 'https://media-cdn.tripadvisor.com/media/photo-l/1b/62/93/a0/caption.jpg',
-                    lat: 35.7176401814438,
-                    lng: 139.785188392868,
-                    name: '오사카',
-                },
-                {
-                    hours: [
-                        {
-                            day: 'SUN',
-                            open: '12:0',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'MON',
-                            open: '16:30',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'TUE',
-                            open: '16:30',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'WED',
-                            open: '16:30',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'THU',
-                            open: '16:30',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'FRI',
-                            open: '16:30',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'SAT',
-                            open: '12:0',
-                            close: '23:45',
-                        },
-                    ],
-                    image: 'https://media-cdn.tripadvisor.com/media/photo-l/1b/62/93/a0/caption.jpg',
-                    lat: 35.7176401814438,
-                    lng: 139.785188392868,
-                    name: '오사카',
-                },
-            ],
-            end: '2023-12-31',
-            flight: 30,
-            flightList: [
-                {
-                    airline: 'YP',
-                    arrivalAirport: 'LAX',
-                    departureAirport: 'ICN',
-                    endTime: '2023-12-31T07:30',
-                    name: 'YP101',
-                    startTime: '2023-12-25T13:30',
-                    url: 'https://www.tripadvisor.com/CheapFlightsPartnerHandoff?searchHash=3a43bb45deca656b05417e46cead30e9&provider=SkyScanner|1|36&area=FLTCenterColumn|0|1|ItinList|2|Meta_ItineraryPrice&resultsServlet=CheapFlightsSearchResults&handoffPlatform=desktop&impressionId=&totalPricePerPassenger=873900.06',
-                },
-                {
-                    airline: 'YP',
-                    arrivalAirport: 'LAX',
-                    departureAirport: 'ICN',
-                    endTime: '2023-12-31T07:30',
-                    name: 'YP101',
-                    startTime: '2023-12-25T13:30',
-                    url: 'https://www.tripadvisor.com/CheapFlightsPartnerHandoff?searchHash=3a43bb45deca656b05417e46cead30e9&provider=SkyScanner|1|36&area=FLTCenterColumn|0|1|ItinList|2|Meta_ItineraryPrice&resultsServlet=CheapFlightsSearchResults&handoffPlatform=desktop&impressionId=&totalPricePerPassenger=873900.06',
-                },
-            ],
-            name: '도쿄222',
-            planId: 2,
-            restaurant: 30,
-            restaurantList: [
-                {
-                    hours: [
-                        {
-                            day: 'SUN',
-                            open: '12:0',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'MON',
-                            open: '16:30',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'TUE',
-                            open: '16:30',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'WED',
-                            open: '16:30',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'THU',
-                            open: '16:30',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'FRI',
-                            open: '16:30',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'SAT',
-                            open: '12:0',
-                            close: '23:45',
-                        },
-                    ],
-                    image: 'https://media-cdn.tripadvisor.com/media/photo-l/18/cc/b9/54/japanese-and-taiwan-fusion.jpg',
-                    lat: 35.7176401814438,
-                    lng: 139.785188392868,
-                    name: '오사카',
-                },
-                {
-                    hours: [
-                        {
-                            day: 'SUN',
-                            open: '12:0',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'MON',
-                            open: '16:30',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'TUE',
-                            open: '16:30',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'WED',
-                            open: '16:30',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'THU',
-                            open: '16:30',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'FRI',
-                            open: '16:30',
-                            close: '23:45',
-                        },
-                        {
-                            day: 'SAT',
-                            open: '12:0',
-                            close: '23:45',
-                        },
-                    ],
-                    image: 'https://media-cdn.tripadvisor.com/media/photo-l/18/cc/b9/54/japanese-and-taiwan-fusion.jpg',
-                    lat: 35.7176401814438,
-                    lng: 139.785188392868,
-                    name: '오사카',
-                },
-            ],
-            start: '2023-12-25',
-            total: 100,
-        },
-    ];
+    // const tmp = [
+    //     {
+    //         accommodation: 30,
+    //         accommodationList: [
+    //             {
+    //                 endDate: '2023-12-31',
+    //                 image: 'https://cf.bstatic.com/xdata/images/hotel/square60/497650805.jpg?k=8a38c4d87eff3bf19478446616bf2349af721648120d685b67097d958b62ae01&o=',
+    //                 lat: 35.7176401814438,
+    //                 lng: 139.785188392868,
+    //                 name: '오사카',
+    //                 startDate: '2023-12-25',
+    //             },
+    //             {
+    //                 endDate: '2023-12-31',
+    //                 image: 'https://cf.bstatic.com/xdata/images/hotel/square60/497650805.jpg?k=8a38c4d87eff3bf19478446616bf2349af721648120d685b67097d958b62ae01&o=',
+    //                 lat: 35.7176401814438,
+    //                 lng: 139.785188392868,
+    //                 name: '오사카',
+    //                 startDate: '2023-12-25',
+    //             },
+    //         ],
+    //         attraction: 10,
+    //         attractionList: [
+    //             {
+    //                 hours: [
+    //                     {
+    //                         day: 'SUN',
+    //                         open: '12:00',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'MON',
+    //                         open: '16:30',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'TUE',
+    //                         open: '16:30',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'WED',
+    //                         open: '16:30',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'THU',
+    //                         open: '16:30',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'FRI',
+    //                         open: '16:30',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'SAT',
+    //                         open: '12:00',
+    //                         close: '23:45',
+    //                     },
+    //                 ],
+    //                 image: 'https://media-cdn.tripadvisor.com/media/photo-l/1b/62/93/a0/caption.jpg',
+    //                 lat: 35.7176401814438,
+    //                 lng: 139.785188392868,
+    //                 name: '오사카',
+    //             },
+    //             {
+    //                 hours: [
+    //                     {
+    //                         day: 'SUN',
+    //                         open: '12:0',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'MON',
+    //                         open: '16:30',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'TUE',
+    //                         open: '16:30',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'WED',
+    //                         open: '16:30',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'THU',
+    //                         open: '16:30',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'FRI',
+    //                         open: '16:30',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'SAT',
+    //                         open: '12:0',
+    //                         close: '23:45',
+    //                     },
+    //                 ],
+    //                 image: 'https://media-cdn.tripadvisor.com/media/photo-l/1b/62/93/a0/caption.jpg',
+    //                 lat: 35.7176401814438,
+    //                 lng: 139.785188392868,
+    //                 name: '오사카',
+    //             },
+    //         ],
+    //         end: '2023-12-31',
+    //         flight: 30,
+    //         flightList: [
+    //             {
+    //                 airline: 'YP',
+    //                 arrivalAirport: 'LAX',
+    //                 departureAirport: 'ICN',
+    //                 endTime: '2023-12-31T07:30',
+    //                 name: 'YP101',
+    //                 startTime: '2023-12-25T13:30',
+    //                 url: 'https://www.tripadvisor.com/CheapFlightsPartnerHandoff?searchHash=3a43bb45deca656b05417e46cead30e9&provider=SkyScanner|1|36&area=FLTCenterColumn|0|1|ItinList|2|Meta_ItineraryPrice&resultsServlet=CheapFlightsSearchResults&handoffPlatform=desktop&impressionId=&totalPricePerPassenger=873900.06',
+    //             },
+    //             {
+    //                 airline: 'YP',
+    //                 arrivalAirport: 'LAX',
+    //                 departureAirport: 'ICN',
+    //                 endTime: '2023-12-31T07:30',
+    //                 name: 'YP101',
+    //                 startTime: '2023-12-25T13:30',
+    //                 url: 'https://www.tripadvisor.com/CheapFlightsPartnerHandoff?searchHash=3a43bb45deca656b05417e46cead30e9&provider=SkyScanner|1|36&area=FLTCenterColumn|0|1|ItinList|2|Meta_ItineraryPrice&resultsServlet=CheapFlightsSearchResults&handoffPlatform=desktop&impressionId=&totalPricePerPassenger=873900.06',
+    //             },
+    //         ],
+    //         name: '도쿄',
+    //         planId: 1,
+    //         restaurant: 30,
+    //         restaurantList: [
+    //             {
+    //                 hours: [
+    //                     {
+    //                         day: 'SUN',
+    //                         open: '12:0',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'MON',
+    //                         open: '16:30',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'TUE',
+    //                         open: '16:30',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'WED',
+    //                         open: '16:30',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'THU',
+    //                         open: '16:30',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'FRI',
+    //                         open: '16:30',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'SAT',
+    //                         open: '12:0',
+    //                         close: '23:45',
+    //                     },
+    //                 ],
+    //                 image: 'https://media-cdn.tripadvisor.com/media/photo-l/18/cc/b9/54/japanese-and-taiwan-fusion.jpg',
+    //                 lat: 35.7176401814438,
+    //                 lng: 139.785188392868,
+    //                 name: '오사카',
+    //             },
+    //             {
+    //                 hours: [
+    //                     {
+    //                         day: 'SUN',
+    //                         open: '12:0',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'MON',
+    //                         open: '16:30',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'TUE',
+    //                         open: '16:30',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'WED',
+    //                         open: '16:30',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'THU',
+    //                         open: '16:30',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'FRI',
+    //                         open: '16:30',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'SAT',
+    //                         open: '12:0',
+    //                         close: '23:45',
+    //                     },
+    //                 ],
+    //                 image: 'https://media-cdn.tripadvisor.com/media/photo-l/18/cc/b9/54/japanese-and-taiwan-fusion.jpg',
+    //                 lat: 35.7176401814438,
+    //                 lng: 139.785188392868,
+    //                 name: '오사카',
+    //             },
+    //         ],
+    //         start: '2023-12-25',
+    //         total: 100,
+    //     },
+    //     {
+    //         accommodation: 30,
+    //         accommodationList: [
+    //             {
+    //                 endDate: '2023-12-31',
+    //                 image: 'https://cf.bstatic.com/xdata/images/hotel/square60/497650805.jpg?k=8a38c4d87eff3bf19478446616bf2349af721648120d685b67097d958b62ae01&o=',
+    //                 lat: 35.7176401814438,
+    //                 lng: 139.785188392868,
+    //                 name: '오사카',
+    //                 startDate: '2023-12-25',
+    //             },
+    //             {
+    //                 endDate: '2023-12-31',
+    //                 image: 'https://cf.bstatic.com/xdata/images/hotel/square60/497650805.jpg?k=8a38c4d87eff3bf19478446616bf2349af721648120d685b67097d958b62ae01&o=',
+    //                 lat: 35.7176401814438,
+    //                 lng: 139.785188392868,
+    //                 name: '오사카',
+    //                 startDate: '2023-12-25',
+    //             },
+    //         ],
+    //         attraction: 10,
+    //         attractionList: [
+    //             {
+    //                 hours: [
+    //                     {
+    //                         day: 'SUN',
+    //                         open: '12:0',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'MON',
+    //                         open: '16:30',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'TUE',
+    //                         open: '16:30',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'WED',
+    //                         open: '16:30',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'THU',
+    //                         open: '16:30',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'FRI',
+    //                         open: '16:30',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'SAT',
+    //                         open: '12:0',
+    //                         close: '23:45',
+    //                     },
+    //                 ],
+    //                 image: 'https://media-cdn.tripadvisor.com/media/photo-l/1b/62/93/a0/caption.jpg',
+    //                 lat: 35.7176401814438,
+    //                 lng: 139.785188392868,
+    //                 name: '오사카',
+    //             },
+    //             {
+    //                 hours: [
+    //                     {
+    //                         day: 'SUN',
+    //                         open: '12:0',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'MON',
+    //                         open: '16:30',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'TUE',
+    //                         open: '16:30',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'WED',
+    //                         open: '16:30',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'THU',
+    //                         open: '16:30',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'FRI',
+    //                         open: '16:30',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'SAT',
+    //                         open: '12:0',
+    //                         close: '23:45',
+    //                     },
+    //                 ],
+    //                 image: 'https://media-cdn.tripadvisor.com/media/photo-l/1b/62/93/a0/caption.jpg',
+    //                 lat: 35.7176401814438,
+    //                 lng: 139.785188392868,
+    //                 name: '오사카',
+    //             },
+    //         ],
+    //         end: '2023-12-31',
+    //         flight: 30,
+    //         flightList: [
+    //             {
+    //                 airline: 'YP',
+    //                 arrivalAirport: 'LAX',
+    //                 departureAirport: 'ICN',
+    //                 endTime: '2023-12-31T07:30',
+    //                 name: 'YP101',
+    //                 startTime: '2023-12-25T13:30',
+    //                 url: 'https://www.tripadvisor.com/CheapFlightsPartnerHandoff?searchHash=3a43bb45deca656b05417e46cead30e9&provider=SkyScanner|1|36&area=FLTCenterColumn|0|1|ItinList|2|Meta_ItineraryPrice&resultsServlet=CheapFlightsSearchResults&handoffPlatform=desktop&impressionId=&totalPricePerPassenger=873900.06',
+    //             },
+    //             {
+    //                 airline: 'YP',
+    //                 arrivalAirport: 'LAX',
+    //                 departureAirport: 'ICN',
+    //                 endTime: '2023-12-31T07:30',
+    //                 name: 'YP101',
+    //                 startTime: '2023-12-25T13:30',
+    //                 url: 'https://www.tripadvisor.com/CheapFlightsPartnerHandoff?searchHash=3a43bb45deca656b05417e46cead30e9&provider=SkyScanner|1|36&area=FLTCenterColumn|0|1|ItinList|2|Meta_ItineraryPrice&resultsServlet=CheapFlightsSearchResults&handoffPlatform=desktop&impressionId=&totalPricePerPassenger=873900.06',
+    //             },
+    //         ],
+    //         name: '도쿄222',
+    //         planId: 2,
+    //         restaurant: 30,
+    //         restaurantList: [
+    //             {
+    //                 hours: [
+    //                     {
+    //                         day: 'SUN',
+    //                         open: '12:0',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'MON',
+    //                         open: '16:30',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'TUE',
+    //                         open: '16:30',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'WED',
+    //                         open: '16:30',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'THU',
+    //                         open: '16:30',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'FRI',
+    //                         open: '16:30',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'SAT',
+    //                         open: '12:0',
+    //                         close: '23:45',
+    //                     },
+    //                 ],
+    //                 image: 'https://media-cdn.tripadvisor.com/media/photo-l/18/cc/b9/54/japanese-and-taiwan-fusion.jpg',
+    //                 lat: 35.7176401814438,
+    //                 lng: 139.785188392868,
+    //                 name: '오사카',
+    //             },
+    //             {
+    //                 hours: [
+    //                     {
+    //                         day: 'SUN',
+    //                         open: '12:0',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'MON',
+    //                         open: '16:30',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'TUE',
+    //                         open: '16:30',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'WED',
+    //                         open: '16:30',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'THU',
+    //                         open: '16:30',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'FRI',
+    //                         open: '16:30',
+    //                         close: '23:45',
+    //                     },
+    //                     {
+    //                         day: 'SAT',
+    //                         open: '12:0',
+    //                         close: '23:45',
+    //                     },
+    //                 ],
+    //                 image: 'https://media-cdn.tripadvisor.com/media/photo-l/18/cc/b9/54/japanese-and-taiwan-fusion.jpg',
+    //                 lat: 35.7176401814438,
+    //                 lng: 139.785188392868,
+    //                 name: '오사카',
+    //             },
+    //         ],
+    //         start: '2023-12-25',
+    //         total: 100,
+    //     },
+    // ];
 
     //유저 일정 가져오기
     useEffect(() => {
@@ -737,7 +737,7 @@ const MyPage = () => {
 
     const [expanded, setExpanded] = useState<string | false>(false);
 
-    const handleChange = (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+    const handleChange = (panel: string) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
         setExpanded(isExpanded ? panel : false);
     };
 
@@ -842,7 +842,7 @@ const MyPage = () => {
                             </AccordionSummary>
                             <AccordionDetails sx={{ width: '90%' }}>
                                 <div>
-                                    {plan.accommodationList.map((accommodation, index) => (
+                                    {plan.accommodationList.map((accommodation: any, index: number) => (
                                         <Box key={index}>
                                             <Wrapper>
                                                 <ImageContainer>
@@ -874,7 +874,7 @@ const MyPage = () => {
                             </AccordionSummary>
                             <AccordionDetails sx={{ width: '90%' }}>
                                 <div>
-                                    {plan.attractionList.map((attraction, index) => (
+                                    {plan.attractionList.map((attraction: any, index: number) => (
                                         <Box key={index}>
                                             <Wrapper>
                                                 <ImageContainer>
@@ -883,7 +883,7 @@ const MyPage = () => {
                                                 <div>{attraction.name}</div>
                                             </Wrapper>
                                             <div>
-                                                {attraction.hours.map((hour, index) => (
+                                                {attraction.hours.map((hour: any, index: number) => (
                                                     <DateBox key={index}>
                                                         <h5>{hour.day}</h5>
                                                         <div>{hour.open}</div>
@@ -919,7 +919,7 @@ const MyPage = () => {
                                         <div style={{ flex: '1' }}>출발시간</div>
                                         <div style={{ flex: '1' }}>도착시간</div>
                                     </FlightInfo>
-                                    {plan.flightList.map((flight, index) => (
+                                    {plan.flightList.map((flight: any, index: number) => (
                                         <Box key={index}>
                                             <div style={{ flex: '1' }}>{flight.name}</div>
                                             <div style={{ flex: '1' }}>{flight.airline}</div>
@@ -949,7 +949,7 @@ const MyPage = () => {
                             </AccordionSummary>
                             <AccordionDetails sx={{ width: '90%' }}>
                                 <div>
-                                    {plan.restaurantList.map((restaurant, index) => (
+                                    {plan.restaurantList.map((restaurant: any, index: number) => (
                                         <Box key={index}>
                                             <Wrapper>
                                                 <ImageContainer>
@@ -958,7 +958,7 @@ const MyPage = () => {
                                                 <div>{restaurant.name}</div>
                                             </Wrapper>
                                             <div>
-                                                {restaurant.hours.map((hour, index) => (
+                                                {restaurant.hours.map((hour: any, index: number) => (
                                                     <DateBox key={index}>
                                                         <h5>{hour.day}</h5>
                                                         <div>{hour.open}</div>

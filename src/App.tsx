@@ -13,7 +13,6 @@ import Post from './pages/Community/Post.tsx';
 import { RecoilRoot } from 'recoil';
 import Article from './pages/Community/Article.tsx';
 import BudgetSelectPage from './pages/budget/BudgetSelectPage/BudgetSelectPage.tsx';
-import { Budgets } from 'aws-sdk';
 import MyArticle from './pages/Community/MyArticle.tsx';
 
 function App() {

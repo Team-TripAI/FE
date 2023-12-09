@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { useState } from 'react';
 
 const getVision = async (image: string) => {
     // API 키

@@ -85,7 +85,7 @@ const Header = () => {
         setAnchorElUser(null);
     };
 
-    const closeUserMenu = (event: React.MouseEvent<HTMLElement>, setting: Setting) => {
+    const closeUserMenu = (_event: React.MouseEvent<HTMLElement>, setting: Setting) => {
         setAnchorElUser(null);
         navigate(setting.dest);
     };
