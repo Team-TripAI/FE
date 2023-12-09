@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 interface ItemData {
   img: string;
   title: string;
+  iata: string;
 }
 
 export default function Posted() {
@@ -21,6 +22,7 @@ export default function Posted() {
     <>
       <Box
         sx={{
+          width: "100vw",
           display: "flex",
           justifyContent: "center",
         }}
@@ -48,34 +50,43 @@ export default function Posted() {
 const itemData: ItemData[] = [
   {
     img: "https://rimage.gnst.jp/livejapan.com/public/article/detail/a/00/04/a0004721/img/ko/a0004721_parts_5fab2f30a98c3.jpg?20230830000000&amp;q=80",
-    title: "일본 도쿄",
+    title: "Tokyo",
+    iata: "HND",
   },
   {
     img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRUHZIRiTD1US7aDGwGRXMFBVCnjgo-jhN_A&usqp=CAU",
-    title: "대한민국 제주도",
+    title: "Jeju Island",
+    iata: "CJU",
   },
   {
     img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGSLort3sXmsVR4QGX4V34D7Xhxx8MtwqWHA&usqp=CAU",
-    title: "일본 오사카",
+    title: "Osaka",
+    iata: "ITM",
   },
   {
     img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0ChbANipS9lQn8QlDVSLdUOQUbTlBf_AWbg&usqp=CAU",
-    title: "일본 삿포로",
+    title: "Sapporo",
+    iata: "OKD",
   },
   {
     img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDEwGljbtf953waOU6Kdji8rYq2vS505s0YA&usqp=CAU",
-    title: "미국 LA",
+    title: "Los Angeles",
+    iata: "LAX",
   },
   {
     img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTU-Oiuw0qRnDtszYr5-EpF4FazYJMHiS43Vw&usqp=CAU",
-    title: "프랑스 파리",
+    title: "Paris",
+    iata: "CDG",
   },
   {
     img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTl_sChrYf8x3ulZhFfBkdW0biiYnSb5bqzUQ&usqp=CAU",
-    title: "영국 런던",
+    title: "London",
+    iata: "LHR",
   },
+
   {
     img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtr-p8mYvnK7UNDXQARWQduVcq5CYvrHzDDg&usqp=CAU",
-    title: "독일 뮌헨",
+    title: "Munchen",
+    iata: "MUC",
   },
 ];

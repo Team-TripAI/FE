@@ -6,8 +6,25 @@ import SelectFlight from "./SelectFlight";
 import SelectRestaurant from "./SelectRestaurant";
 import SelectAttraction from "./SelectAttraction";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../../apis/axiosInstance";
+import { useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import { submitFormat } from "../../../constants/atoms";
+
+interface PostForm {
+  accommodation: number;
+  flight: number;
+  attraction: number;
+  restaurant: number;
+  restaurantList: any[];
+  attractionList: any[];
+  flightList: any[];
+  accommodationList: any[];
+  name: string;
+  total: number;
+  end: string | null;
+  start: string | null;
+}
 
 const MainContainer = styled.div`
   width: 100vw;
@@ -20,9 +37,61 @@ const MainContainer = styled.div`
 
 export default function BudgetSelectPage() {
   const [page, setPage] = useState<number>(0);
+  const [flightList, setFlightList] = useState<any[]>([]);
+  const [accommodationList, setAccommodationList] = useState<any[]>([]);
+  const [restaurantList, setRestaurantList] = useState<any[]>([]);
+  const [attractionList, setAttractionList] = useState<any[]>([]);
+  const [submitForm, setSubmitForm] = useState({});
+  const [lastPageCalled, setLastPageCalled] = useState(false);
   const navigate = useNavigate();
-  // recoil value 가져와서 api 호출하기
-  const format = useRecoilValue(submitFormat);
+  const formData = useRecoilValue(submitFormat);
+
+  const postBudget = async (finalForm: PostForm) => {
+    try {
+      const response = await axiosInstance.post("/plan/budget/", {
+        ...finalForm,
+      });
+      console.log(response);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const lastPage = () => {
+    if (!lastPageCalled) {
+      const finalForm: PostForm = {
+        accommodation: formData.percent[1],
+        accommodationList,
+        attraction: formData.percent[3],
+        attractionList,
+        end: formData.endDate,
+        flight: formData.percent[0],
+        flightList,
+        restaurant: formData.percent[2],
+        restaurantList,
+        name: formData.destination,
+        total: 100,
+        start: formData.startDate,
+      };
+      postBudget(finalForm);
+      setLastPageCalled(true);
+    }
+  };
+
+  const getFlightList = (newFlightList: any[]) => {
+    setFlightList(newFlightList);
+  };
+
+  const getAccommodationList = (newAccommodationList: any[]) => {
+    setAccommodationList(newAccommodationList);
+  };
+
+  const getRestaurantList = (newRestaurantList: any[]) => {
+    setRestaurantList(newRestaurantList);
+  };
+  const getAttractionList = (newAttractionList: any[]) => {
+    setAttractionList(newAttractionList);
+  };
 
   const nextPage = () => {
     setPage((prevPage) => prevPage + 1);
@@ -32,49 +101,54 @@ export default function BudgetSelectPage() {
     setPage((prevPage) => prevPage - 1);
   };
 
+  useEffect(() => {
+    if (page === 4) {
+      lastPage();
+    }
+  }, [page]);
+
   let pageContent;
   switch (page) {
     case 0:
-      pageContent = <SelectFlight />;
-      console.log();
+      pageContent = (
+        <SelectFlight nextPage={nextPage} getFlightList={getFlightList} />
+      );
       break;
     case 1:
-      pageContent = <SelectAccommodation />;
+      pageContent = (
+        <SelectAccommodation
+          prevPage={prevPage}
+          nextPage={nextPage}
+          getAccommodationList={getAccommodationList}
+        />
+      );
       break;
     case 2:
-      pageContent = <SelectRestaurant />;
+      pageContent = (
+        <SelectRestaurant
+          prevPage={prevPage}
+          nextPage={nextPage}
+          getRestaurantList={getRestaurantList}
+        />
+      );
       break;
     case 3:
-      pageContent = <SelectAttraction />;
+      pageContent = (
+        <SelectAttraction
+          prevPage={prevPage}
+          nextPage={nextPage}
+          getAttractionList={getAttractionList}
+        />
+      );
+      break;
+    case 4:
+      pageContent = <div>posting...</div>;
       break;
   }
 
   return (
     <>
-      <MainContainer>
-        {pageContent}
-        <div>
-          {page === 0 && <Button onClick={nextPage}>Next</Button>}
-          {page === 1 && (
-            <>
-              <Button onClick={prevPage}>Prev</Button>
-              <Button onClick={nextPage}>Next</Button>
-            </>
-          )}
-          {page === 2 && (
-            <>
-              <Button onClick={prevPage}>Prev</Button>
-              <Button onClick={nextPage}>Next</Button>
-            </>
-          )}
-          {page === 3 && (
-            <>
-              <Button onClick={prevPage}>Prev</Button>
-              <Button onClick={() => navigate("/main")}>Save</Button>
-            </>
-          )}
-        </div>
-      </MainContainer>
+      <MainContainer>{pageContent}</MainContainer>
     </>
   );
 }

@@ -11,25 +11,20 @@ import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import { Box, Typography } from "@mui/material";
+import { useRecoilValue } from "recoil";
+import { submitFormat } from "../../../constants/atoms";
+import { useEffect } from "react";
+import axiosInstance from "../../../apis/axiosInstance";
+import { useState } from "react";
+import { Alert } from "@mui/material";
 
 interface Attraction {
   name: string;
   lat: number;
   lng: number;
+  image: string;
+  price: string;
 }
-
-const attractionList: Attraction[] = [
-  {
-    name: "Meiji Jingu Shrine",
-    lat: 35.676167,
-    lng: 139.69952,
-  },
-  {
-    name: "Shinjuku Gyoen National Garden",
-    lat: 35.686,
-    lng: 139.70984,
-  },
-];
 
 const Container = styled.div`
   width: 100vw;
@@ -51,13 +46,52 @@ function intersection(a: readonly Attraction[], b: readonly Attraction[]) {
   return a.filter((value) => b.indexOf(value) !== -1);
 }
 
-export default function SelectAttraction() {
+export default function SelectAttraction({
+  prevPage,
+  nextPage,
+  getAttractionList,
+}) {
   const [checked, setChecked] = React.useState<readonly Attraction[]>([]);
-  const [left, setLeft] = React.useState<readonly Attraction[]>(attractionList);
+  const [left, setLeft] = React.useState<readonly Attraction[]>([]);
   const [right, setRight] = React.useState<readonly Attraction[]>([]);
-
+  const [attractionList, setAttractionList] = useState<Attraction[]>([]);
+  const attractionData = useRecoilValue(submitFormat);
   const leftChecked = intersection(checked, left);
   const rightChecked = intersection(checked, right);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string>("");
+  const [alert, setAlert] = useState(false);
+  useEffect(() => {
+    const getAttraction = async () => {
+      try {
+        const response = await axiosInstance.get(
+          "/plan/budget/attraction/international",
+          {
+            params: {
+              destination: attractionData.destination,
+              maxPrice: attractionData.money[3],
+            },
+          }
+        );
+        setAttractionList(response.data.data.attractionSearchDataList);
+        setLeft(response.data.data.attractionSearchDataList);
+        if (left !== null) {
+          setLoading(false);
+        }
+      } catch (err) {
+        console.log(err);
+        setError("에러가 발생했습니다");
+        setLoading(false);
+      }
+    };
+    getAttraction();
+  }, []);
+
+  useEffect(() => {
+    if (attractionList.length > 0) {
+      initMap();
+    }
+  }, [right]);
 
   const handleToggle = (attraction: Attraction) => () => {
     const currentIndex = checked.indexOf(attraction);
@@ -80,6 +114,20 @@ export default function SelectAttraction() {
     setLeft(not(left, leftChecked));
     setChecked(not(checked, leftChecked));
   };
+  const handlePrevPage = () => {
+    prevPage(3);
+  };
+
+  const handleNextPage = () => {
+    if (right.length > 0) {
+      nextPage(3);
+      const selectedAttraction = [];
+      if (right) selectedAttraction.push(right);
+      getAttractionList(selectedAttraction);
+    } else {
+      setAlert(true);
+    }
+  };
 
   const handleCheckedLeft = () => {
     setLeft(left.concat(rightChecked));
@@ -89,12 +137,7 @@ export default function SelectAttraction() {
 
   const customList = (title: React.ReactNode, items: readonly Attraction[]) => (
     <Card>
-      <CardHeader
-        sx={{ px: 1, py: 1 }}
-        avatar={<Box />}
-        title="선택된 숙소"
-        subheader={`${numberOfChecked(items)}/${items.length} selected`}
-      />
+      <CardHeader sx={{ px: 1, py: 1 }} avatar={<Box />} title={title} />
       <Divider />
       {/* 여기가 표 리스트 아이템들 */}
       <List
@@ -134,12 +177,12 @@ export default function SelectAttraction() {
     const { Map } = await google.maps.importLibrary("maps");
 
     const map = new Map(document.getElementById("map") as HTMLElement, {
-      center: { lat: attractionList[0].lat, lng: attractionList[0].lng },
+      center: { lat: right[0].lat, lng: right[0].lng },
       zoom: 12,
     });
     // 고른 곳
     right.map((attraction: Attraction) => {
-      const marker = new google.maps.Marker({
+      new google.maps.Marker({
         map,
         position: {
           lat: attraction.lat,
@@ -157,7 +200,7 @@ export default function SelectAttraction() {
     });
     // 아직 안 고른 곳
     left.map((attraction: Attraction) => {
-      const marker = new google.maps.Marker({
+      new google.maps.Marker({
         map,
         position: {
           lat: attraction.lat,
@@ -173,16 +216,24 @@ export default function SelectAttraction() {
         },
       });
     });
+    setLoading(false);
   }
 
-  initMap();
-
-  /* 숙소 선택 갯수 알아야함 */
-
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+  if (error) {
+    return <div>Error..</div>;
+  }
   return (
     <>
+      {alert && (
+        <Alert variant="outlined" severity="error" sx={{ mb: 2 }}>
+          please check your inputs!
+        </Alert>
+      )}
       <Typography variant="h4" align="center">
-        원하는 명소를 선택하세요
+        명소를 선택하시면 지도가 나옵니다!
       </Typography>
       <Divider sx={{ my: 2 }} />
       <Container>
@@ -194,7 +245,7 @@ export default function SelectAttraction() {
             justifyContent="center"
             alignItems="center"
           >
-            <Grid item>{customList("Choices", left)}</Grid>
+            <Grid item>{customList("명소 리스트", left)}</Grid>
             <Grid item>
               <Grid container direction="column" alignItems="center">
                 <Button
@@ -219,10 +270,14 @@ export default function SelectAttraction() {
                 </Button>
               </Grid>
             </Grid>
-            <Grid item>{customList("Chosen", right)}</Grid>
+            <Grid item>{customList("선택된 명소", right)}</Grid>
           </Grid>
         </MapContainer>
       </Container>
+      <div>
+        <Button onClick={handlePrevPage}>prev</Button>
+        <Button onClick={handleNextPage}>next</Button>
+      </div>
     </>
   );
 }

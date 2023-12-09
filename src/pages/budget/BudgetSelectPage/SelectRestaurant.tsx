@@ -11,6 +11,12 @@ import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import { Box, Typography } from "@mui/material";
+import { useRecoilValue } from "recoil";
+import { submitFormat } from "../../../constants/atoms";
+import { useEffect } from "react";
+import axiosInstance from "../../../apis/axiosInstance";
+import { useState } from "react";
+import { Alert } from "@mui/material";
 
 interface Restaurant {
   name: string;
@@ -22,19 +28,6 @@ interface Restaurant {
     close: string;
   };
 }
-
-const restaurantList: Restaurant[] = [
-  {
-    name: "Gyopao Gyoza Roppongi",
-    lat: 35.663578,
-    lng: 139.73212,
-  },
-  {
-    name: "Rokkasen",
-    lat: 35.69537,
-    lng: 139.6986,
-  },
-];
 
 const Container = styled.div`
   width: 100vw;
@@ -56,13 +49,52 @@ function intersection(a: readonly Restaurant[], b: readonly Restaurant[]) {
   return a.filter((value) => b.indexOf(value) !== -1);
 }
 
-export default function SelectRestaurant() {
+export default function SelectRestaurant({
+  nextPage,
+  prevPage,
+  getRestaurantList,
+}) {
   const [checked, setChecked] = React.useState<readonly Restaurant[]>([]);
-  const [left, setLeft] = React.useState<readonly Restaurant[]>(restaurantList);
+  const [left, setLeft] = React.useState<readonly Restaurant[]>([]);
   const [right, setRight] = React.useState<readonly Restaurant[]>([]);
-
+  const [restaurantList, setRestaurantList] = useState<Restaurant[]>([]);
+  const restaurantData = useRecoilValue(submitFormat);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string>("");
+  const [alert, setAlert] = useState(false);
   const leftChecked = intersection(checked, left);
   const rightChecked = intersection(checked, right);
+
+  useEffect(() => {
+    const getRestaurants = async () => {
+      try {
+        const response = await axiosInstance.get("/plan/budget/restaurant", {
+          params: {
+            destination: restaurantData.destination,
+            endDate: restaurantData.endDate,
+            startDate: restaurantData.startDate,
+            maxPrice: restaurantData.money[2],
+          },
+        });
+        setRestaurantList(response.data.data.restaurantSearchDataList);
+        setLeft(response.data.data.restaurantSearchDataList);
+        if (left !== null) {
+          setLoading(false);
+        }
+      } catch (err) {
+        console.log(err);
+        setError("에러가 발생했습니다");
+        setLoading(false);
+      }
+    };
+    getRestaurants();
+  }, []);
+
+  useEffect(() => {
+    if (restaurantList.length > 0) {
+      initMap();
+    }
+  }, [right]);
 
   const handleToggle = (restaurant: Restaurant) => () => {
     const currentIndex = checked.indexOf(restaurant);
@@ -75,6 +107,21 @@ export default function SelectRestaurant() {
     }
 
     setChecked(newChecked);
+  };
+
+  const handleNextPage = () => {
+    if (right.length > 0) {
+      nextPage(2);
+      const selectedRestaurant = [];
+      if (right) selectedRestaurant.push(right);
+      getRestaurantList(selectedRestaurant);
+    } else {
+      setAlert(true);
+    }
+  };
+
+  const handlePrevPage = () => {
+    prevPage(2);
   };
 
   const numberOfChecked = (items: readonly Restaurant[]) =>
@@ -94,12 +141,7 @@ export default function SelectRestaurant() {
 
   const customList = (title: React.ReactNode, items: readonly Restaurant[]) => (
     <Card>
-      <CardHeader
-        sx={{ px: 1, py: 1 }}
-        avatar={<Box />}
-        title="선택된 숙소"
-        subheader={`${numberOfChecked(items)}/${items.length} selected`}
-      />
+      <CardHeader sx={{ px: 1, py: 1 }} avatar={<Box />} title={title} />
       <Divider />
       {/* 여기가 표 리스트 아이템들 */}
       <List
@@ -116,7 +158,7 @@ export default function SelectRestaurant() {
         {items.map((restaurant: Restaurant) => {
           return (
             <ListItem
-              key={restaurant.name}
+              key={restaurant.lat}
               role="listitem"
               onClick={handleToggle(restaurant)}
             >
@@ -134,17 +176,16 @@ export default function SelectRestaurant() {
       </List>
     </Card>
   );
-
   async function initMap() {
     const { Map } = await google.maps.importLibrary("maps");
 
     const map = new Map(document.getElementById("map") as HTMLElement, {
-      center: { lat: restaurantList[0].lat, lng: restaurantList[0].lng },
+      center: { lat: right[0].lat, lng: right[0].lng },
       zoom: 12,
     });
     // 고른 곳
     right.map((restaurant: Restaurant) => {
-      const marker = new google.maps.Marker({
+      new google.maps.Marker({
         map,
         position: {
           lat: restaurant.lat,
@@ -162,7 +203,7 @@ export default function SelectRestaurant() {
     });
     // 아직 안 고른 곳
     left.map((restaurant: Restaurant) => {
-      const marker = new google.maps.Marker({
+      new google.maps.Marker({
         map,
         position: {
           lat: restaurant.lat,
@@ -180,14 +221,22 @@ export default function SelectRestaurant() {
     });
   }
 
-  initMap();
-
-  /* 숙소 선택 갯수 알아야함 */
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <>
+      {alert && (
+        <Alert variant="outlined" severity="error" sx={{ mb: 2 }}>
+          please check your inputs!
+        </Alert>
+      )}
       <Typography variant="h4" align="center">
-        식당을 선택하세요
+        식당을 선택하시면 지도가 나옵니다!
       </Typography>
       <Divider sx={{ my: 2 }} />
       <Container>
@@ -199,7 +248,7 @@ export default function SelectRestaurant() {
             justifyContent="center"
             alignItems="center"
           >
-            <Grid item>{customList("Choices", left)}</Grid>
+            <Grid item>{customList("식당 리스트", left)}</Grid>
             <Grid item>
               <Grid container direction="column" alignItems="center">
                 <Button
@@ -224,10 +273,14 @@ export default function SelectRestaurant() {
                 </Button>
               </Grid>
             </Grid>
-            <Grid item>{customList("Chosen", right)}</Grid>
+            <Grid item>{customList("선택한 식당", right)}</Grid>
           </Grid>
         </MapContainer>
       </Container>
+      <div>
+        <Button onClick={handlePrevPage}>prev</Button>
+        <Button onClick={handleNextPage}>next</Button>
+      </div>
     </>
   );
 }
