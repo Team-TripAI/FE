@@ -3,7 +3,7 @@ import ImageUploader from "../../components/ImageUploader/index.tsx";
 import { Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { Box } from "@mui/material";
-import { StandaloneSearchBox, useJsApiLoader } from "@react-google-maps/api";
+import { useJsApiLoader } from "@react-google-maps/api";
 import { useRef } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -92,7 +92,7 @@ const ContentTextarea = styled.textarea`
 
 export default function Post() {
   const { register, handleSubmit } = useForm<FormValues>();
-  const inputRef = useRef<null | undefined>();
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const [lat, setLat] = useState<number>(0);
   const [lng, setLng] = useState<number>(0);
   const [locationName, setLocationName] = useState<string>("");
@@ -139,12 +139,16 @@ export default function Post() {
   };
 
   const handlePlaceChanged = () => {
-    // name, lat, lng, formatted_address,
-    const [place] = inputRef.current.getPlaces();
-    setLat(place.geometry.location.lat());
-    setLng(place.geometry.location.lng());
-    setFormattedAddress(place.formatted_address);
-    setLocationName(place.name);
+    if (inputRef.current) {
+      const autocomplete = new window.google.maps.places.Autocomplete(
+        inputRef.current
+      );
+      const place = autocomplete.getPlace();
+      setLat(place.geometry?.location?.lat() ?? 0);
+      setLng(place.geometry?.location?.lng() ?? 0);
+      setFormattedAddress(place.formatted_address ?? "");
+      setLocationName(place.name ?? "");
+    }
   };
 
   return (
@@ -157,16 +161,13 @@ export default function Post() {
           <Typography>장소</Typography>
           {isLoaded && (
             <>
-              <StandaloneSearchBox
-                onLoad={(ref) => (inputRef.current = ref)}
-                onPlacesChanged={handlePlaceChanged}
-              >
-                <LocationInput
-                  type="text"
-                  className="form-control"
-                  placeholder="놀러간 장소를 입력해주세요"
-                />
-              </StandaloneSearchBox>
+              <LocationInput
+                ref={inputRef}
+                type="text"
+                className="form-control"
+                placeholder="놀러간 장소를 입력해주세요"
+                onChange={handlePlaceChanged}
+              />
               <form onSubmit={handleSubmit(onValid)}>
                 <Box sx={{ width: "100%" }}>
                   <Typography>제목</Typography>

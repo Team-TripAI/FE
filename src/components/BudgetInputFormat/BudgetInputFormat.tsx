@@ -85,7 +85,7 @@ export default function BudgetInputFormat({ item }: { item: ItemInterface }) {
   const setSubmitFormat = useSetRecoilState(submitFormat);
   const changeAmount = (e: React.ChangeEvent<HTMLInputElement>) =>
     setAmount(Number(e.target.value));
-  const changePercent = (e: Event, newPercent: number | number[]) => {
+  const changePercent = (_e: Event, newPercent: number | number[]) => {
     if (Array.isArray(newPercent)) {
       const updatedPercent = [...percent];
       newPercent.forEach((value, index) => {

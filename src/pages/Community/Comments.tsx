@@ -3,18 +3,16 @@ import styled from "styled-components";
 import { Typography, TextField, Button, Box } from "@mui/material";
 import axiosInstance from "../../apis/axiosInstance";
 
-interface Comment {
-  commentId: number;
-  content: string | null;
-  isParent: boolean;
-  nickname: string;
-  createDate: string;
-  modifyDate: string;
-}
-
 interface CommentsProps {
   articleId: string | undefined;
-  comments: Comment[];
+  comments?: Array<{
+    commentId: number;
+    content: string;
+    isParent: boolean;
+    nickname: string;
+    createDate: string;
+    modifyDate: string;
+  }>;
 }
 
 interface CommentSubmitForm {
@@ -143,7 +141,7 @@ const Comments: React.FC<CommentsProps> = ({ articleId, comments }) => {
         </Button>
       </Box>
       {(comments?.length ?? 0) > 0 ? (
-        comments.map((comment) => (
+        comments?.map((comment) => (
           <div key={comment.commentId}>
             {comment.isParent ? (
               <CommentContents>
