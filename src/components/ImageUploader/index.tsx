@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import AWS from 'aws-sdk';
 import styled from 'styled-components';
 import uploadimg from '../../imgs/uploadimg.png';
@@ -7,7 +7,6 @@ import getVision from './getVision';
 import base64encoding from './base64encoding';
 import { useRecoilState } from 'recoil';
 import { imageInfo } from '../../constants/imageInfo';
-import { set } from 'react-hook-form';
 
 const Container = styled.div`
     display: flex;
@@ -67,13 +66,13 @@ const ImageUploader = () => {
         if (base64Image) {
             getVision(base64Image)
                 .then((data) => {
-                    console.log('returned data:', data);
                     //결과 전역변수에 저장
                     setMyImageInfo((prev) => ({
                         ...prev,
                         colorList: data.hexColorList,
                         labelList: data.labelList,
                     }));
+                    console.log(myImageInfo);
                 })
                 .catch((error) => console.error(error));
         }
