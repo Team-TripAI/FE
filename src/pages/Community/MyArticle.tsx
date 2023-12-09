@@ -23,7 +23,7 @@ const Wrapper = styled.div`
   width: 100vw;
 `;
 
-const myArticle = () => {
+export default function MyArticle() {
   const navigate = useNavigate();
   const [articleList, setArticleList] = useState<ArticleInterface[]>([]);
   const [pageNumber, setPageNumber] = useState<number>(1);
@@ -110,6 +110,4 @@ const myArticle = () => {
       </div>
     </Wrapper>
   );
-};
-
-export default myArticle;
+}
