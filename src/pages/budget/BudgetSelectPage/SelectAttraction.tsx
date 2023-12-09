@@ -24,6 +24,7 @@ interface Attraction {
   lng: number;
   image: string;
   price: string;
+  hours: string[];
 }
 
 const Container = styled.div`
@@ -121,9 +122,17 @@ export default function SelectAttraction({
   const handleNextPage = () => {
     if (right.length > 0) {
       nextPage(3);
-      const selectedAttraction = [];
-      if (right) selectedAttraction.push(right);
-      getAttractionList(selectedAttraction);
+      const selectedAttraction = right;
+      const formattedAttractions = selectedAttraction.map((attr) => {
+        return {
+          name: attr.name,
+          lat: attr.lat,
+          lng: attr.lng,
+          hours: attr.hours,
+          image: attr.image,
+        };
+      });
+      getAttractionList(formattedAttractions);
     } else {
       setAlert(true);
     }

@@ -19,11 +19,14 @@ import { Button } from "@mui/material";
 
 interface Flight {
   id: string;
-  departureAirport: string;
-  arrivalAirport: string;
+  airline: string;
   departureDate: string;
   arrivalDate: string;
   departureTime: string;
+  arrivalTime: string;
+  departureAirport: string;
+  arrivalAirport: string;
+  url: string;
 }
 
 const Container = styled.div`
@@ -79,7 +82,23 @@ export default function SelectFlight({ nextPage, getFlightList }) {
       const selectedFlights = [];
       selectedFlights.push(leftChecked);
       selectedFlights.push(rightChecked);
-      getFlightList(selectedFlights);
+      const formattedFlights = selectedFlights.map((flight) => {
+        return {
+          name: flight.id,
+          airline: flight.airline,
+          departureAirport: flight.departureAirport,
+          arrivalAirport: flight.arrivalAirport,
+          startTime: `${flight.departureDate}T${flight.departureTime
+            .split("+")[0]
+            .slice(0, -3)}`,
+          endTime: `${flight.arrivalDate}T${flight.arrivalTime
+            .split("+")[0]
+            .slice(0, -3)}`,
+          url: flight.url,
+        };
+      });
+      console.log(formattedFlights);
+      getFlightList(formattedFlights);
     } else {
       setAlert(true);
     }
@@ -134,7 +153,6 @@ export default function SelectFlight({ nextPage, getFlightList }) {
             <ListItemText primary={flight.departureAirport} />
             <ListItemText primary="->" />
             <ListItemText primary={flight.arrivalAirport} />
-            <ListItemText primary={flight.departureDate} />
             <ListItemText primary={flight.departureTime} />
           </ListItem>
         ))}

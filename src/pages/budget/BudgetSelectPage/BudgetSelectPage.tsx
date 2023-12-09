@@ -52,7 +52,9 @@ export default function BudgetSelectPage() {
         ...finalForm,
       });
       console.log(response);
+      navigate("/mypage");
     } catch (err) {
+      console.log(finalForm);
       console.log(err);
     }
   };
@@ -75,6 +77,7 @@ export default function BudgetSelectPage() {
       };
       postBudget(finalForm);
       setLastPageCalled(true);
+      console.log(finalForm);
     }
   };
 

@@ -27,6 +27,7 @@ interface Restaurant {
     open: string;
     close: string;
   };
+  image: string;
 }
 
 const Container = styled.div`
@@ -54,9 +55,9 @@ export default function SelectRestaurant({
   prevPage,
   getRestaurantList,
 }) {
-  const [checked, setChecked] = React.useState<readonly Restaurant[]>([]);
-  const [left, setLeft] = React.useState<readonly Restaurant[]>([]);
-  const [right, setRight] = React.useState<readonly Restaurant[]>([]);
+  const [checked, setChecked] = React.useState<Restaurant[]>([]);
+  const [left, setLeft] = React.useState<Restaurant[]>([]);
+  const [right, setRight] = React.useState<Restaurant[]>([]);
   const [restaurantList, setRestaurantList] = useState<Restaurant[]>([]);
   const restaurantData = useRecoilValue(submitFormat);
   const [loading, setLoading] = useState<boolean>(true);
@@ -112,9 +113,16 @@ export default function SelectRestaurant({
   const handleNextPage = () => {
     if (right.length > 0) {
       nextPage(2);
-      const selectedRestaurant = [];
-      if (right) selectedRestaurant.push(right);
-      getRestaurantList(selectedRestaurant);
+      const formattedRestaurants = right.map((rest) => {
+        return {
+          name: rest.name,
+          lat: rest.lat,
+          lng: rest.lng,
+          hours: rest.hours,
+          image: rest.image,
+        };
+      });
+      getRestaurantList(formattedRestaurants);
     } else {
       setAlert(true);
     }
