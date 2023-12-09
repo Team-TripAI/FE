@@ -1,11 +1,4 @@
-import {
-  Container,
-  Typography,
-  Box,
-  Paper,
-  IconButton,
-  InputBase,
-} from "@mui/material";
+import { Container, Typography } from "@mui/material";
 import Posted from "../../components/Posted";
 import { styled } from "@mui/material";
 
