@@ -51,6 +51,10 @@ export default function SelectAttraction({
   prevPage,
   nextPage,
   getAttractionList,
+}: {
+  prevPage: any;
+  nextPage: any;
+  getAttractionList: any;
 }) {
   const [checked, setChecked] = React.useState<readonly Attraction[]>([]);
   const [left, setLeft] = React.useState<readonly Attraction[]>([]);
@@ -106,9 +110,6 @@ export default function SelectAttraction({
 
     setChecked(newChecked);
   };
-
-  const numberOfChecked = (items: readonly Attraction[]) =>
-    intersection(checked, items).length;
 
   const handleCheckedRight = () => {
     setRight(right.concat(leftChecked));
@@ -183,7 +184,7 @@ export default function SelectAttraction({
   );
 
   async function initMap() {
-    const { Map } = await google.maps.importLibrary("maps");
+    const { Map } = google.maps;
 
     const map = new Map(document.getElementById("map") as HTMLElement, {
       center: { lat: right[0].lat, lng: right[0].lng },

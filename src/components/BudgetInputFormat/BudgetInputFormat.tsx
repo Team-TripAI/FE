@@ -22,6 +22,12 @@ import { Alert } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
 
+interface ItemInterface {
+  iata: string;
+  title: string;
+  img: string;
+}
+
 const SliderBox = styled(Box)({
   width: "45vw",
   marginTop: 3,
@@ -66,19 +72,30 @@ const modalstyle = {
   borderRadius: 12,
 };
 
-export default function BudgetInputFormat({ item }) {
+export default function BudgetInputFormat({ item }: { item: ItemInterface }) {
   const [amount, setAmount] = useState<number>(0);
   const [percent, setPercent] = useState<number[]>([25, 50, 75]);
   const [maxValue, setMaxValue] = useState<number[]>([0, 0, 0, 0]);
-  const [firstDate, setFirstDate] = useState<string | null>("");
-  const [secondDate, setSecondDate] = useState<string | null>("");
+  const [firstDate, setFirstDate] = useState<any>("");
+  const [secondDate, setSecondDate] = useState<any>("");
   const [open, setOpen] = useState(false);
   const [error, setError] = useState(false);
   const navigate = useNavigate();
 
   const setSubmitFormat = useSetRecoilState(submitFormat);
-  const changeAmount = (e: any) => setAmount(e.target.value);
-  const changePercent = (e: any) => setPercent(e.target.value);
+  const changeAmount = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setAmount(Number(e.target.value));
+  const changePercent = (e: Event, newPercent: number | number[]) => {
+    if (Array.isArray(newPercent)) {
+      const updatedPercent = [...percent];
+      newPercent.forEach((value, index) => {
+        if (!isNaN(value) && index >= 0 && index < percent.length) {
+          updatedPercent[index] = value;
+        }
+      });
+      setPercent(updatedPercent);
+    }
+  };
 
   const handleClose = () => {
     setPercent([25, 50, 75]);
@@ -220,7 +237,7 @@ export default function BudgetInputFormat({ item }) {
         <Slider
           track={false}
           marks={marks}
-          value={percent}
+          value={percent as number[]}
           disableSwap
           onChange={changePercent}
         />

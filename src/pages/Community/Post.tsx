@@ -92,7 +92,7 @@ const ContentTextarea = styled.textarea`
 
 export default function Post() {
   const { register, handleSubmit } = useForm<FormValues>();
-  const inputRef = useRef();
+  const inputRef = useRef<null | undefined>();
   const [lat, setLat] = useState<number>(0);
   const [lng, setLng] = useState<number>(0);
   const [locationName, setLocationName] = useState<string>("");
@@ -105,6 +105,7 @@ export default function Post() {
 
   const onClick = async () => {
     try {
+      console.log(imageData);
       const finalFormData: FormValues = {
         title,
         content,
@@ -116,10 +117,10 @@ export default function Post() {
         labelList: imageData.labelList,
         image: imageData.imageUrl,
       };
-      console.log(finalFormData);
       const response = await axiosInstance.post("/articles", {
         ...finalFormData,
       });
+      console.log(response);
       alert("게시글 등록 완료!");
       navigate("/main");
     } catch (err) {
@@ -127,16 +128,7 @@ export default function Post() {
     }
   };
 
-  const handleVisionData = (data) => {
-    setColorList(data.colorList);
-    setLabelList(data.labelList);
-  };
-
-  const handleImageData = (data) => {
-    setImage(data);
-  };
-
-  const { isLoaded, loadError } = useJsApiLoader({
+  const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_API,
     libraries: ["places"],
   });
@@ -158,10 +150,7 @@ export default function Post() {
   return (
     <Wrapper>
       <ImageDiv>
-        <ImageUploader
-          handleVisionData={handleVisionData}
-          handleImageData={handleImageData}
-        />
+        <ImageUploader />
       </ImageDiv>
       <PostDiv>
         <Box sx={{ width: "100%", mx: 2 }}>

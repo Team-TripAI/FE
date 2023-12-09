@@ -56,6 +56,10 @@ export default function SelectAccommodation({
   prevPage,
   nextPage,
   getAccommodationList,
+}: {
+  prevPage: any;
+  nextPage: any;
+  getAccommodationList: any;
 }) {
   const [checked, setChecked] = useState<readonly Accommodation[]>([]);
   const [left, setLeft] = useState<readonly Accommodation[]>([]);
@@ -116,9 +120,6 @@ export default function SelectAccommodation({
 
     setChecked(newChecked);
   };
-
-  const numberOfChecked = (items: readonly Accommodation[]) =>
-    intersection(checked, items).length;
 
   const handleCheckedRight = () => {
     setRight(right.concat(leftChecked));
@@ -197,7 +198,7 @@ export default function SelectAccommodation({
   );
 
   async function initMap() {
-    const { Map } = await google.maps.importLibrary("maps");
+    const { Map } = google.maps;
 
     const map = new Map(document.getElementById("map") as HTMLElement, {
       center: {
