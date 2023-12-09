@@ -5,7 +5,6 @@ import {
   Divider,
   Modal,
   Stack,
-  Paper,
   Chip,
   TextField,
 } from "@mui/material";
@@ -21,6 +20,7 @@ import { styled } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import { Alert } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import moment from "moment";
 
 const SliderBox = styled(Box)({
   width: "45vw",
@@ -66,11 +66,12 @@ const modalstyle = {
   borderRadius: 12,
 };
 
-export default function BudgetInputFormat() {
+export default function BudgetInputFormat({ item }) {
   const [amount, setAmount] = useState<number>(0);
   const [percent, setPercent] = useState<number[]>([25, 50, 75]);
-  const [firstDate, setFirstDate] = useState<Date | null>(null);
-  const [secondDate, setSecondDate] = useState<Date | null>(null);
+  const [maxValue, setMaxValue] = useState<number[]>([0, 0, 0, 0]);
+  const [firstDate, setFirstDate] = useState<string | null>(null);
+  const [secondDate, setSecondDate] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
   const [error, setError] = useState(false);
   const navigate = useNavigate();
@@ -99,18 +100,27 @@ export default function BudgetInputFormat() {
     percentArray[1] = percent[1] - percent[0];
     percentArray[0] = percent[0];
     setPercent(percentArray);
+    const maxValueArray = percentArray.map((percent) =>
+      Math.floor((amount * percent) / 100)
+    );
+    setMaxValue(maxValueArray);
   }
 
   function onClickSave() {
     const checkIfNumber = isNumber(amount);
-
     if (
       checkIfNumber &&
-      parseInt(amount) > 0 &&
+      amount > 0 &&
       firstDate !== null &&
       secondDate !== null
     ) {
-      setAmount(parseInt(amount));
+      const startDate = moment(firstDate?.$d);
+      const formattedStartDate = startDate.format("YYYY-MM-DD");
+      const endDate = moment(secondDate?.$d);
+      const formattedSecondDate = endDate.format("YYYY-MM-DD");
+      setFirstDate(formattedStartDate);
+      setSecondDate(formattedSecondDate);
+      setAmount(amount);
       setOpen(true);
       calculatePercent();
       setError(false);
@@ -120,10 +130,12 @@ export default function BudgetInputFormat() {
   function onClickSubmit() {
     setSubmitFormat((prev) => ({
       ...prev,
+      destination: item.title,
       startDate: firstDate,
       endDate: secondDate,
-      money: amount,
-      percentage: percent,
+      money: maxValue,
+      percent: percent,
+      iata: item.iata,
     }));
     navigate("/budget/select");
   }
@@ -142,7 +154,7 @@ export default function BudgetInputFormat() {
         <DemoContainer components={["DatePicker", "DatePicker"]}>
           <Box
             sx={{
-              width: "100%",
+              width: "45vw",
               display: "flex",
               alignItems: "center",
             }}
@@ -226,14 +238,10 @@ export default function BudgetInputFormat() {
       <Modal open={open} onClose={handleClose}>
         <Box sx={modalstyle}>
           <Typography variant="h6" component="h2">
-            {`출발 날짜 : ${firstDate?.$y}년 ${firstDate?.$M + 1}월 ${
-              firstDate?.$D
-            }일`}
+            {`출발 날짜 : ${firstDate}`}
           </Typography>
           <Typography variant="h6" component="h2" sx={{ mb: 2 }}>
-            {`도착 날짜 : ${secondDate?.$y}년 ${secondDate?.$M + 1}월 ${
-              secondDate?.$D
-            }일`}
+            {`도착 날짜 : ${secondDate}`}
           </Typography>
           <Divider />
           <Typography

@@ -11,14 +11,16 @@ import { useState } from "react";
 
 interface ArticleInterface {
   atricleId: number;
-  // commentList: [{
-  //   commnetId : number;
-  //   content: string;
-  //   isParent : boolean;
-  //   nickname : string;
-  //   createDate : string;
-  //   modifyDate : string;
-  // }]
+  commentList: [
+    {
+      commentId: number;
+      content: string;
+      isParent: boolean;
+      nickname: string;
+      createDate: string;
+      modifyDate: string;
+    }
+  ];
   content: string;
   createDate: string;
   formattedAddress: string;
@@ -50,16 +52,19 @@ const ContentBox = styled.div`
 `;
 
 export default function Article() {
-  const postId = useParams();
+  const articleId = useParams();
   const [articleContent, setArticleContent] = useState<ArticleInterface>();
 
   useEffect(() => {
     const getArticle = async () => {
       try {
-        const response = await axiosInstance.get(`/articles/${postId.postId}`);
+        console.log(articleId);
+        const response = await axiosInstance.get(
+          `/articles/${articleId.postId}`
+        );
         const articleContent: ArticleInterface = response.data.data;
         setArticleContent(articleContent);
-        console.log(response.data);
+        console.log(response.data.data);
       } catch (err) {
         console.log(err);
       }
@@ -102,7 +107,10 @@ export default function Article() {
             <Typography>{articleContent?.content}</Typography>
           </ContentBox>
           <Divider />
-          {/* <Comments comments={articleContent.commentList}></Comments> */}
+          <Comments
+            articleId={articleId?.postId}
+            comments={articleContent?.commentList}
+          ></Comments>
         </MainContainer>
       </Wrapper>
     </>

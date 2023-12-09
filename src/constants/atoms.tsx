@@ -1,17 +1,21 @@
 import { atom } from "recoil";
 interface SubmitFormatInterface {
-  startDate: Date | null;
-  endDate: Date | null;
-  money: number;
-  percentage: number[];
+  destination: string;
+  startDate: string | null;
+  endDate: string | null;
+  money: number[];
+  percent: number[];
+  iata: string;
 }
 
 export const submitFormat = atom<SubmitFormatInterface>({
   key: "submitFormat",
   default: {
-    startDate: new Date(),
-    endDate: new Date(),
-    money: 0,
-    percentage: [],
+    destination: "",
+    startDate: "",
+    endDate: "",
+    money: [],
+    percent: [],
+    iata: "",
   },
 });

@@ -14,7 +14,6 @@ const MainContainer = styled(Container)({
   width: "100vw",
   height: "80vh",
   display: "flex",
-  justifyContent: "center",
 });
 
 const ImageCard = styled(CardMedia)({
@@ -38,7 +37,7 @@ export default function BudgetInputPage() {
 
   return (
     <>
-      <MainContainer maxWidth="xl">
+      <MainContainer>
         <Box sx={{ marginRight: "20px" }}>
           <PlaceInfoCard>
             <ImageCard image={item.img}></ImageCard>
@@ -47,8 +46,8 @@ export default function BudgetInputPage() {
             </Typography>
           </PlaceInfoCard>
         </Box>
-        <Box sx={{ width: "650px", height: "750px" }}>
-          <BudgetInputFormat></BudgetInputFormat>
+        <Box sx={{ width: "50vw", height: "750px" }}>
+          <BudgetInputFormat item={item}></BudgetInputFormat>
         </Box>
       </MainContainer>
     </>

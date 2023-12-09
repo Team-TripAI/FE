@@ -8,35 +8,23 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Checkbox from "@mui/material/Checkbox";
-import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
-import { Box, Typography } from "@mui/material";
+import { Alert, Box, Typography } from "@mui/material";
 import { useState } from "react";
+import { useRecoilValue } from "recoil";
+import { submitFormat } from "../../../constants/atoms";
+import { useEffect } from "react";
+import axiosInstance from "../../../apis/axiosInstance";
+import { Button } from "@mui/material";
 
 interface Flight {
+  id: string;
   departureAirport: string;
   arrivalAirport: string;
   departureDate: string;
   arrivalDate: string;
+  departureTime: string;
 }
-
-const flightDepartureList: Flight[] = [
-  {
-    departureAirport: "ICN",
-    arrivalAirport: "LAX",
-    departureDate: "2023-12-25",
-    arrivalDate: "2023-12-25",
-  },
-];
-
-const flightArrivalList: Flight[] = [
-  {
-    departureAirport: "LAX",
-    arrivalAirport: "ICN",
-    departureDate: "2023-12-31",
-    arrivalDate: "2023-12-31",
-  },
-];
 
 const Container = styled.div`
   width: 100vw;
@@ -44,40 +32,77 @@ const Container = styled.div`
   display: flex;
 `;
 
-function not(a: readonly Flight[], b: readonly Flight[]) {
-  return a.filter((value) => b.indexOf(value) === -1);
-}
+export default function SelectFlight({ nextPage, getFlightList }) {
+  const [leftChecked, setLeftChecked] = useState<Flight | null>(null);
+  const [rightChecked, setRightChecked] = useState<Flight | null>(null);
+  const [left, setLeft] = useState<readonly Flight[]>([]);
+  const [right, setRight] = useState<readonly Flight[]>([]);
+  const flightData = useRecoilValue(submitFormat);
+  const [error, setError] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(true);
+  const [alert, setAlert] = useState(false);
 
-function intersection(a: readonly Flight[], b: readonly Flight[]) {
-  return a.filter((value) => b.indexOf(value) !== -1);
-}
+  useEffect(() => {
+    const getFlight = async () => {
+      try {
+        const response = await axiosInstance.get("/plan/budget/flight", {
+          params: {
+            arrivalAirport: flightData.iata,
+            departure: flightData.startDate,
+            departureAirport: "ICN",
+            maxFare: flightData.money[0],
+          },
+        });
+        const responseArrival = await axiosInstance.get("/plan/budget/flight", {
+          params: {
+            arrivalAirport: "ICN",
+            departure: flightData.endDate,
+            departureAirport: flightData.iata,
+            maxFare: flightData.money[0],
+          },
+        });
+        setLeft(response.data.data.flightSearchDataList);
+        setRight(responseArrival.data.data.flightSearchDataList);
+        setLoading(false);
+      } catch (err) {
+        console.log(err);
+        setError("에러가 발생했습니다");
+        setLoading(false);
+      }
+    };
+    getFlight();
+  }, [flightData]);
 
-export default function SelectAccommodation() {
-  const [checked, setChecked] = useState<readonly Flight[]>([]);
-  const [left, setLeft] = useState<readonly Flight[]>(flightDepartureList);
-  const [right, setRight] = useState<readonly Flight[]>(flightArrivalList);
-
-  const leftChecked = intersection(checked, left);
-  const rightChecked = intersection(checked, right);
-
-  const handleToggle = (flight: Flight) => () => {
-    const currentIndex = checked.indexOf(flight);
-    const newChecked = [...checked];
-
-    if (currentIndex === -1) {
-      newChecked.push(flight);
+  const onClick = () => {
+    if (leftChecked !== null && rightChecked !== null) {
+      nextPage(1);
+      const selectedFlights = [];
+      selectedFlights.push(leftChecked);
+      selectedFlights.push(rightChecked);
+      getFlightList(selectedFlights);
     } else {
-      newChecked.splice(currentIndex, 1);
+      setAlert(true);
     }
-
-    setChecked(newChecked);
   };
 
-  const customList = (title: React.ReactNode, items: readonly Flight[]) => (
+  const handleToggle = (list: "left" | "right", flight: Flight) => () => {
+    if (list === "left") {
+      setLeftChecked(flight);
+      getFlightList(flight);
+    } else {
+      setRightChecked(flight);
+      getFlightList(flight);
+    }
+  };
+
+  const customList = (
+    title: React.ReactNode,
+    list: "left" | "right",
+    items: readonly Flight[]
+  ) => (
     <Card>
       <CardHeader sx={{ px: 1, py: 1 }} avatar={<Box />} title={title} />
       <Divider />
-      {/* 여기가 표 리스트 아이템들 */}
       <List
         sx={{
           width: "30vw",
@@ -89,45 +114,61 @@ export default function SelectAccommodation() {
         component="div"
         role="list"
       >
-        {items.map((flight: Flight) => {
-          return (
-            <ListItem
-              key={flight.departureAirport}
-              role="listitem"
-              onClick={handleToggle(flight)}
-            >
-              <ListItemIcon>
-                <Checkbox
-                  checked={checked.indexOf(flight) !== -1}
-                  tabIndex={-1}
-                  disableRipple
-                />
-              </ListItemIcon>
-              <ListItem>
-                <ListItemText primary={flight.departureAirport} />
-                <ListItemText primary={flight.arrivalAirport} />
-                <ListItemText primary={flight.departureDate} />
-                <ListItemText primary={flight.arrivalDate} />
-              </ListItem>
-            </ListItem>
-          );
-        })}
+        {items.map((flight: Flight) => (
+          <ListItem
+            key={flight.id}
+            role="listitem"
+            onClick={handleToggle(list, flight)}
+          >
+            <ListItemIcon>
+              <Checkbox
+                checked={
+                  list === "left"
+                    ? leftChecked === flight
+                    : rightChecked === flight
+                }
+                tabIndex={-1}
+                disableRipple
+              />
+            </ListItemIcon>
+            <ListItemText primary={flight.departureAirport} />
+            <ListItemText primary="->" />
+            <ListItemText primary={flight.arrivalAirport} />
+            <ListItemText primary={flight.departureDate} />
+            <ListItemText primary={flight.departureTime} />
+          </ListItem>
+        ))}
       </List>
     </Card>
   );
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   return (
     <>
+      {alert && (
+        <Alert variant="outlined" severity="error" sx={{ mb: 2 }}>
+          please check your inputs!
+        </Alert>
+      )}
       <Typography variant="h4" align="center">
         항공권을 선택하세요!
       </Typography>
       <Divider sx={{ my: 2 }} />
       <Container>
         <Grid container spacing={2} justifyContent="center" alignItems="center">
-          <Grid item>{customList("출국 항공권", left)}</Grid>
-          <Grid item>{customList("입국 항공권", right)}</Grid>
+          <Grid item>{customList("출국 항공권", "left", left)}</Grid>
+          <Grid item>{customList("입국 항공권", "right", right)}</Grid>
         </Grid>
       </Container>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <Button onClick={onClick}>next</Button>
+      </div>
     </>
   );
 }
