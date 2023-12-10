@@ -26,7 +26,7 @@ const settingsWithLogin: Setting[] = [
     },
     {
         name: '내 글 목록',
-        dest: '/main',
+        dest: '/myArticle',
     },
     {
         name: '로그아웃',

@@ -659,8 +659,10 @@ const MyPage = () => {
             });
 
             console.log(response);
-            setPlanList(response.data.planList);
-            setTotalPages(response.data.totalPages);
+            setPlanList(response.data.data.planList);
+            setTotalPages(response.data.data.totalPages);
+            console.log(planList);
+            console.log(totalPages);
         })();
     }, [pageNumber]);
 
@@ -689,6 +691,7 @@ const MyPage = () => {
             } catch (error) {
                 //실패시
                 setTmpName(name);
+                alert('잘못된 비밀번호입니다.');
             } finally {
                 setNameState(false);
             }
@@ -792,10 +795,10 @@ const MyPage = () => {
                 </ModifyName>
             </Header>
 
-            {planList.length === 0 && <NoPlan>저장한 일정이 없습니다.</NoPlan>}
+            {planList ? <></> : <NoPlan>저장한 일정이 없습니다.</NoPlan>}
 
             {/* 각 plan을 map */}
-            {planList.map((plan, index) => (
+            {planList?.map((plan, index) => (
                 <div key={index}>
                     <Plans>
                         <PlansHeader>
@@ -844,13 +847,13 @@ const MyPage = () => {
                                 <div>
                                     {plan.accommodationList.map((accommodation: any, index: number) => (
                                         <Box key={index}>
-                                            <Wrapper>
+                                            <Wrapper style={{ flex: '1' }}>
                                                 <ImageContainer>
                                                     <Image src={accommodation.image} alt="" />
                                                 </ImageContainer>
                                                 <div>{accommodation.name}</div>
                                             </Wrapper>
-                                            <div>
+                                            <div style={{ flex: '1' }}>
                                                 <h4>일정 : </h4>
                                                 <h3>{accommodation.startDate}</h3>
                                                 <h4>~</h4>
@@ -876,13 +879,13 @@ const MyPage = () => {
                                 <div>
                                     {plan.attractionList.map((attraction: any, index: number) => (
                                         <Box key={index}>
-                                            <Wrapper>
+                                            <Wrapper style={{ flex: '1' }}>
                                                 <ImageContainer>
                                                     <Image src={attraction.image} alt="" />
                                                 </ImageContainer>
                                                 <div>{attraction.name}</div>
                                             </Wrapper>
-                                            <div>
+                                            <div style={{ flex: '1' }}>
                                                 {attraction.hours.map((hour: any, index: number) => (
                                                     <DateBox key={index}>
                                                         <h5>{hour.day}</h5>
@@ -951,13 +954,13 @@ const MyPage = () => {
                                 <div>
                                     {plan.restaurantList.map((restaurant: any, index: number) => (
                                         <Box key={index}>
-                                            <Wrapper>
+                                            <Wrapper style={{ flex: '1' }}>
                                                 <ImageContainer>
                                                     <Image src={restaurant.image} alt="" />
                                                 </ImageContainer>
                                                 <div>{restaurant.name}</div>
                                             </Wrapper>
-                                            <div>
+                                            <div style={{ flex: '1' }}>
                                                 {restaurant.hours.map((hour: any, index: number) => (
                                                     <DateBox key={index}>
                                                         <h5>{hour.day}</h5>
