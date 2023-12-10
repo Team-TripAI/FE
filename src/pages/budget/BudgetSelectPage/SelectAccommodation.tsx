@@ -198,7 +198,9 @@ export default function SelectAccommodation({
   );
 
   async function initMap() {
-    const { Map } = google.maps;
+    const { Map } = (await google.maps.importLibrary(
+      "maps"
+    )) as google.maps.MapsLibrary;
 
     const map = new Map(document.getElementById("map") as HTMLElement, {
       center: {
