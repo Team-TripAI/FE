@@ -186,7 +186,9 @@ export default function SelectRestaurant({
     </Card>
   );
   async function initMap() {
-    const { Map } = google.maps;
+    const { Map } = (await google.maps.importLibrary(
+      "maps"
+    )) as google.maps.MapsLibrary;
 
     const map = new Map(document.getElementById("map") as HTMLElement, {
       center: { lat: right[0].lat, lng: right[0].lng },
