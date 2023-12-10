@@ -34,7 +34,7 @@
         "react-router-dom": "^6.16.0",
         "recoil": "^0.7.7",
         "recoil-persist": "^5.1.0",
-        "styled-components": "^5.3.1",
+        "styled-components": "^6.1.1",
         "vite-plugin-checker": "^0.6.2",
         "vite-plugin-material-ui": "^1.0.1",
         "vite-plugin-react": "^4.0.1"
