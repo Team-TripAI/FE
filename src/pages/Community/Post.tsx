@@ -3,14 +3,13 @@ import ImageUploader from "../../components/ImageUploader/index.tsx";
 import { Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { Box } from "@mui/material";
-import { useJsApiLoader } from "@react-google-maps/api";
+import { StandaloneSearchBox, useJsApiLoader } from "@react-google-maps/api";
 import { useRef } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../apis/axiosInstance.ts";
 import { imageInfo } from "../../constants/imageInfo.ts";
 import { useRecoilValue } from "recoil";
-
 interface FormValues {
   colorList: string[];
   content: string;
@@ -22,14 +21,12 @@ interface FormValues {
   locationName: string;
   title: string;
 }
-
 const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
   display: flex;
   margin-top: 100px;
 `;
-
 const PostButton = styled.button`
   color: black;
   border-color: black;
@@ -42,18 +39,15 @@ const PostButton = styled.button`
     background-color: white;
   }
 `;
-
 const ImageDiv = styled.div`
   width: 50vw;
   height: 50vh;
 `;
-
 const PostDiv = styled.div`
   width: 50vw;
   height: 70%;
   display: flex;
 `;
-
 const TitleInput = styled.textarea`
   width: 45vw;
   font-size: large;
@@ -77,7 +71,6 @@ const LocationInput = styled.input`
     outline: none;
   }
 `;
-
 const ContentTextarea = styled.textarea`
   width: 45vw;
   height: 25vw;
@@ -92,7 +85,7 @@ const ContentTextarea = styled.textarea`
 
 export default function Post() {
   const { register, handleSubmit } = useForm<FormValues>();
-  const inputRef = useRef<HTMLInputElement | null>(null);
+  const inputRef = useRef<null | undefined>();
   const [lat, setLat] = useState<number>(0);
   const [lng, setLng] = useState<number>(0);
   const [locationName, setLocationName] = useState<string>("");
@@ -100,9 +93,7 @@ export default function Post() {
   const [title, setTitle] = useState<string>("");
   const [content, setContent] = useState<string>("");
   const imageData = useRecoilValue(imageInfo);
-
   const navigate = useNavigate();
-
   const onClick = async () => {
     try {
       console.log(imageData);
@@ -127,28 +118,22 @@ export default function Post() {
       console.log(err);
     }
   };
-
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_API,
     libraries: ["places"],
   });
-
   const onValid = (data: any) => {
     setContent(data.content);
     setTitle(data.title);
   };
 
   const handlePlaceChanged = () => {
-    if (inputRef.current) {
-      const autocomplete = new window.google.maps.places.Autocomplete(
-        inputRef.current
-      );
-      const place = autocomplete.getPlace();
-      setLat(place.geometry?.location?.lat() ?? 0);
-      setLng(place.geometry?.location?.lng() ?? 0);
-      setFormattedAddress(place.formatted_address ?? "");
-      setLocationName(place.name ?? "");
-    }
+    // name, lat, lng, formatted_address,
+    const [place] = inputRef.current.getPlaces();
+    setLat(place.geometry.location.lat());
+    setLng(place.geometry.location.lng());
+    setFormattedAddress(place.formatted_address);
+    setLocationName(place.name);
   };
 
   return (
@@ -161,13 +146,16 @@ export default function Post() {
           <Typography>장소</Typography>
           {isLoaded && (
             <>
-              <LocationInput
-                ref={inputRef}
-                type="text"
-                className="form-control"
-                placeholder="놀러간 장소를 입력해주세요"
-                onChange={handlePlaceChanged}
-              />
+              <StandaloneSearchBox
+                onLoad={(ref) => (inputRef.current = ref)}
+                onPlacesChanged={handlePlaceChanged}
+              >
+                <LocationInput
+                  type="text"
+                  className="form-control"
+                  placeholder="놀러간 장소를 입력해주세요"
+                />
+              </StandaloneSearchBox>
               <form onSubmit={handleSubmit(onValid)}>
                 <Box sx={{ width: "100%" }}>
                   <Typography>제목</Typography>
