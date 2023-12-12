@@ -20,18 +20,6 @@ import { useState } from 'react';
 const Wrapper = styled.div`
     width: 100vw;
 `;
-
-//임시.. 로고로 바꾸기
-const Logo = styled.div`
-    width: 100%;
-    height: 5rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 2rem;
-    font-weight: bold;
-    margin-bottom: 2rem;
-`;
 const Name = styled.div`
     font-size: 1.2rem;
     font-weight: bold;
@@ -124,7 +112,6 @@ const ImagePage = () => {
                             {/* <Typography component="h1" variant="h2" align="center" color="text.primary" gutterBottom>
                                 이미지 기반 추천
                             </Typography> */}
-                            <Logo>로고</Logo>
                             {/* <Typography variant="h5" align="center" color="text.secondary" paragraph>
                                 Something short and leading about the collection below—its contents, the creator, etc.
                                 Make it short and sweet, but not too short so folks don&apos;t simply skip over it
