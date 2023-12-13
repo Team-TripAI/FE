@@ -3,7 +3,7 @@ import Posted from "../../components/Posted";
 import { styled } from "@mui/material";
 
 const MainContainer = styled(Container)({
-  marginTop: 100,
+  marginTop: 90,
   width: "100vw",
   display: "flex",
   justifyContent: "center",

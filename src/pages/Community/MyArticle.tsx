@@ -53,7 +53,7 @@ export default function MyArticle() {
 
   return (
     <Wrapper>
-      <Container sx={{ height: "100vh", mt: 13 }}>
+      <Container sx={{ height: "75vh", mt: 13 }}>
         <Box>
           <Typography
             gutterBottom

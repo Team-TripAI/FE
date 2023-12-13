@@ -46,7 +46,7 @@ export default function BudgetInputPage() {
             </Typography>
           </PlaceInfoCard>
         </Box>
-        <Box sx={{ width: "50vw", height: "750px" }}>
+        <Box sx={{ width: "50vw", height: "60vh" }}>
           <BudgetInputFormat item={item}></BudgetInputFormat>
         </Box>
       </MainContainer>
