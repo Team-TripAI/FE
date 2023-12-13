@@ -27,7 +27,7 @@ export default function Posted() {
           justifyContent: "center",
         }}
       >
-        <ImageList sx={{ width: "1220px", height: "750px" }}>
+        <ImageList sx={{ width: "70vw", height: "80vh" }}>
           {itemData.map((item) => (
             <ImageListItem key={item.img}>
               <img

@@ -26,7 +26,6 @@ interface Flight {
   arrivalTime: string;
   departureAirport: string;
   arrivalAirport: string;
-  url: string;
 }
 
 const Container = styled.div`
@@ -71,6 +70,7 @@ export default function SelectFlight({
           },
         });
         setLeft(response.data.data.flightSearchDataList);
+        console.log(responseArrival);
         setRight(responseArrival.data.data.flightSearchDataList);
         setLoading(false);
       } catch (err) {
@@ -100,7 +100,6 @@ export default function SelectFlight({
           endTime: `${flight.arrivalDate}T${flight.arrivalTime
             .split("+")[0]
             .slice(0, -3)}`,
-          url: flight.url,
         };
       });
       console.log(formattedFlights);

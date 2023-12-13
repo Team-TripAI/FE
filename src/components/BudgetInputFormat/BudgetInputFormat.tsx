@@ -33,6 +33,7 @@ const SliderBox = styled(Box)({
   marginTop: 3,
   marginBottom: 3,
   display: "flex",
+  height: "10vh",
   justifyContent: "center",
 });
 
@@ -83,8 +84,7 @@ export default function BudgetInputFormat({ item }: { item: ItemInterface }) {
   const navigate = useNavigate();
 
   const setSubmitFormat = useSetRecoilState(submitFormat);
-  const changeAmount = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setAmount(Number(e.target.value));
+  const changeAmount = (e: any) => setAmount(e.target.value);
   const changePercent = (_e: Event, newPercent: number | number[]) => {
     if (Array.isArray(newPercent)) {
       const updatedPercent = [...percent];
@@ -173,6 +173,7 @@ export default function BudgetInputFormat({ item }: { item: ItemInterface }) {
             sx={{
               width: "45vw",
               display: "flex",
+              height: "10vh",
               alignItems: "center",
             }}
           >
@@ -208,6 +209,7 @@ export default function BudgetInputFormat({ item }: { item: ItemInterface }) {
       <Box
         sx={{
           my: 3,
+          height: "10vh",
         }}
       >
         <TextField
